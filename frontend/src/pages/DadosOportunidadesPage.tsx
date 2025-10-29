@@ -16,9 +16,13 @@ import {
   ChevronUp,
   Eye,
   Trash2,
-  ArrowLeft
+  ArrowLeft,
+  X,
+  Info,
+  ExternalLink
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { EstatisticasResponse, TopEmpresaRisco, TopEmpresasResponse, TopDominioRisco, TopDominiosResponse } from '../types';
 
 interface VagaCompleta {
   _id: string;
@@ -56,11 +60,6 @@ interface VagasResponse {
   skip: number;
 }
 
-interface EstatisticasResponse {
-  total_vagas: number;
-  alto_risco: number;
-}
-
 const DadosOportunidadesPage: React.FC = () => {
   const navigate = useNavigate();
   const [vagas, setVagas] = useState<VagaCompleta[]>([]);
@@ -72,6 +71,10 @@ const DadosOportunidadesPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [estatisticas, setEstatisticas] = useState<EstatisticasResponse>({ total_vagas: 0, alto_risco: 0 });
+  const [topEmpresas, setTopEmpresas] = useState<TopEmpresaRisco[]>([]);
+  const [topDominios, setTopDominios] = useState<TopDominioRisco[]>([]);
+  const [modalVagaInfo, setModalVagaInfo] = useState<VagaCompleta | null>(null);
+  const [modalAnaliseRisco, setModalAnaliseRisco] = useState<VagaCompleta | null>(null);
   const itemsPerPage = 10;
 
   const fetchEstatisticas = async () => {
@@ -83,6 +86,30 @@ const DadosOportunidadesPage: React.FC = () => {
       }
     } catch (err) {
       console.error('Erro ao carregar estatísticas:', err);
+    }
+  };
+
+  const fetchTopEmpresas = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/vagas/top-empresas-risco');
+      if (response.ok) {
+        const data: TopEmpresasResponse = await response.json();
+        setTopEmpresas(data.empresas);
+      }
+    } catch (err) {
+      console.error('Erro ao carregar top empresas:', err);
+    }
+  };
+
+  const fetchTopDominios = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/vagas/top-dominios-risco');
+      if (response.ok) {
+        const data: TopDominiosResponse = await response.json();
+        setTopDominios(data.dominios);
+      }
+    } catch (err) {
+      console.error('Erro ao carregar top domínios:', err);
     }
   };
 
@@ -128,6 +155,8 @@ const DadosOportunidadesPage: React.FC = () => {
     setCurrentPage(1); // Resetar para página 1 quando o filtro muda
     fetchVagas(1);
     fetchEstatisticas();
+    fetchTopEmpresas();
+    fetchTopDominios();
   }, [filterRisco]);
 
   useEffect(() => {
@@ -174,6 +203,22 @@ const DadosOportunidadesPage: React.FC = () => {
 
   const toggleExpanded = (vagaId: string) => {
     setExpandedVaga(expandedVaga === vagaId ? null : vagaId);
+  };
+
+  const openVagaInfoModal = (vaga: VagaCompleta) => {
+    setModalVagaInfo(vaga);
+  };
+
+  const closeVagaInfoModal = () => {
+    setModalVagaInfo(null);
+  };
+
+  const openAnaliseRiscoModal = (vaga: VagaCompleta) => {
+    setModalAnaliseRisco(vaga);
+  };
+
+  const closeAnaliseRiscoModal = () => {
+    setModalAnaliseRisco(null);
   };
 
   if (loading) {
@@ -265,6 +310,211 @@ const DadosOportunidadesPage: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Top Empresas com Alto Risco */}
+        {topEmpresas && topEmpresas.length > 0 && (
+          <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden mb-8">
+            {/* Header com gradiente */}
+            <div className="bg-gradient-to-r from-red-600 to-orange-600 px-6 py-5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-4">
+                    <Building className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white">Empresas com Mais Vagas de Alto/Crítico Risco</h3>
+                    <p className="text-red-100 text-sm mt-1">
+                      Lista das empresas que mais aparecem em oportunidades de alto ou crítico risco
+                    </p>
+                  </div>
+                </div>
+                <div className="hidden sm:block">
+                  <div className="bg-white bg-opacity-20 rounded-lg px-4 py-2">
+                    <div className="text-white text-sm font-medium">{topEmpresas.length}</div>
+                    <div className="text-red-100 text-xs">empresas</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Conteúdo */}
+            <div className="p-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+                {topEmpresas && topEmpresas.length > 0 ? topEmpresas.map((empresa, index) => {
+                  // Calcular largura da barra de progresso de forma segura
+                  const maxVagas = Math.max(...topEmpresas.map(e => e.total_vagas_alto_risco), 1);
+                  const progressWidth = maxVagas > 0 
+                    ? Math.min(100, (empresa.total_vagas_alto_risco / maxVagas) * 100) 
+                    : 0;
+                  
+                  return (
+                    <div 
+                      key={empresa.empresa} 
+                      className="relative overflow-hidden rounded-xl border-2 border-red-200 bg-gradient-to-br from-red-50 to-pink-50 transition-all duration-300 hover:shadow-xl hover:scale-105"
+                    >
+
+                      {/* Conteúdo principal */}
+                      <div className="p-5">
+                        {/* Nome da empresa */}
+                        <div className="mb-4">
+                          <h4 className={`font-bold text-gray-900 text-base leading-tight ${
+                            (empresa.empresa?.length || 0) > 25 ? 'text-sm' : 'text-base'
+                          }`}>
+                            {empresa.empresa || 'Empresa não especificada'}
+                          </h4>
+                        </div>
+
+                        {/* Estatísticas */}
+                        <div className="text-center">
+                          <div className="text-3xl font-black mb-1 text-red-600">
+                            {empresa.total_vagas_alto_risco}
+                          </div>
+                          <div className="text-xs font-semibold uppercase tracking-wide text-red-700">
+                            {empresa.total_vagas_alto_risco === 1 ? 'Vaga Suspeita' : 'Vagas Suspeitas'}
+                          </div>
+                        </div>
+
+                        {/* Barra de progresso visual */}
+                        <div className="mt-4">
+                          <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                            <div 
+                              className="h-2 rounded-full transition-all duration-1000 bg-gradient-to-r from-red-400 to-red-500"
+                              style={{ width: `${progressWidth}%` }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Efeito de brilho no hover */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 hover:opacity-10 transition-opacity duration-300 pointer-events-none" />
+                    </div>
+                  );
+                }) : (
+                  <div className="col-span-full text-center py-8">
+                    <div className="text-gray-500 text-sm">
+                      Nenhuma empresa com alto risco encontrada
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Footer com informações adicionais */}
+              <div className="mt-6 pt-4 border-t border-gray-200">
+                <div className="flex flex-col sm:flex-row items-center justify-between text-sm text-gray-600">
+                  <div className="flex items-center mb-2 sm:mb-0">
+                    <AlertTriangle className="h-4 w-4 text-red-500 mr-2" />
+                    <span>Dados atualizados em tempo real</span>
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    Baseado em {estatisticas.alto_risco} vagas de alto risco analisadas
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Top Domínios com Alto Risco */}
+        {topDominios && topDominios.length > 0 && (
+          <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden mb-8">
+            {/* Header com gradiente */}
+            <div className="bg-gradient-to-r from-orange-600 to-red-600 px-6 py-5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-4">
+                    <Globe className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white">Fontes com Mais Vagas de Alto/Crítico Risco</h3>
+                    <p className="text-orange-100 text-sm mt-1">
+                      Lista das fontes que mais aparecem em oportunidades de alto ou crítico risco
+                    </p>
+                  </div>
+                </div>
+                <div className="hidden sm:block">
+                  <div className="bg-white bg-opacity-20 rounded-lg px-4 py-2">
+                    <div className="text-white text-sm font-medium">{topDominios.length}</div>
+                    <div className="text-orange-100 text-xs">fontes</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Conteúdo */}
+            <div className="p-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+                {topDominios && topDominios.length > 0 ? topDominios.map((dominio, index) => {
+                  // Calcular largura da barra de progresso de forma segura
+                  const maxVagas = Math.max(...topDominios.map(d => d.total_vagas_alto_risco), 1);
+                  const progressWidth = maxVagas > 0 
+                    ? Math.min(100, (dominio.total_vagas_alto_risco / maxVagas) * 100) 
+                    : 0;
+                  
+                  return (
+                    <div 
+                      key={dominio.dominio} 
+                      className="relative overflow-hidden rounded-xl border-2 border-orange-200 bg-gradient-to-br from-orange-50 to-red-50 transition-all duration-300 hover:shadow-xl hover:scale-105"
+                    >
+                      {/* Conteúdo principal */}
+                      <div className="p-5">
+                        {/* Nome da fonte */}
+                        <div className="mb-4">
+                          <h4 className={`font-bold text-gray-900 text-base leading-tight ${
+                            (dominio.dominio?.length || 0) > 25 ? 'text-sm' : 'text-base'
+                          }`}>
+                            {dominio.dominio || 'Fonte não especificada'}
+                          </h4>
+                        </div>
+
+                        {/* Estatísticas */}
+                        <div className="text-center">
+                          <div className="text-3xl font-black mb-1 text-orange-600">
+                            {dominio.total_vagas_alto_risco}
+                          </div>
+                          <div className="text-xs font-semibold uppercase tracking-wide text-orange-700">
+                            {dominio.total_vagas_alto_risco === 1 ? 'Vaga Suspeita' : 'Vagas Suspeitas'}
+                          </div>
+                        </div>
+
+                        {/* Barra de progresso visual */}
+                        <div className="mt-4">
+                          <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                            <div 
+                              className="h-2 rounded-full transition-all duration-1000 bg-gradient-to-r from-orange-400 to-orange-500"
+                              style={{ width: `${progressWidth}%` }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Efeito de brilho no hover */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 hover:opacity-10 transition-opacity duration-300 pointer-events-none" />
+                    </div>
+                  );
+                }) : (
+                  <div className="col-span-full text-center py-8">
+                    <div className="text-gray-500 text-sm">
+                      Nenhuma fonte com alto risco encontrada
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Footer com informações adicionais */}
+              <div className="mt-6 pt-4 border-t border-gray-200">
+                <div className="flex flex-col sm:flex-row items-center justify-between text-sm text-gray-600">
+                  <div className="flex items-center mb-2 sm:mb-0">
+                    <AlertTriangle className="h-4 w-4 text-orange-500 mr-2" />
+                    <span>Dados atualizados em tempo real</span>
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    Baseado em {estatisticas.alto_risco} vagas de alto risco analisadas
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Lista de Vagas */}
         <div className="space-y-6">
@@ -390,138 +640,41 @@ const DadosOportunidadesPage: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Detalhes Expandidos */}
+                {/* Detalhes Expandidos - Apenas Análise de Risco */}
                 {expandedVaga === vaga._id && (
                   <div className="p-6 bg-gray-50">
-                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-                      {/* Informações da Vaga */}
-                      <div className="space-y-6">
-                        <div className="bg-white rounded-lg p-5 border border-gray-200">
-                          <h4 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                            <FileText className="h-5 w-5 mr-2 text-blue-600" />
-                            Informações da Vaga
-                          </h4>
-                          
-                          <div className="space-y-4">
-                            {vaga.descricao && (
-                              <div>
-                                <label className="text-sm font-semibold text-gray-700 block mb-2">Descrição:</label>
-                                <p className="text-sm text-gray-600 leading-relaxed bg-gray-50 p-3 rounded-lg">{vaga.descricao}</p>
-                              </div>
-                            )}
-                            
-                            {vaga.requisitos && (
-                              <div>
-                                <label className="text-sm font-semibold text-gray-700 block mb-2">Requisitos:</label>
-                                <p className="text-sm text-gray-600 leading-relaxed bg-gray-50 p-3 rounded-lg">{vaga.requisitos}</p>
-                              </div>
-                            )}
-                            
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                              {vaga.beneficios && (
-                                <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-                                  <label className="text-sm font-semibold text-green-700 block mb-1">Benefícios:</label>
-                                  <p className="text-sm text-green-800">{vaga.beneficios}</p>
-                                </div>
-                              )}
-                              
-                              {vaga.contatos && (
-                                <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
-                                  <label className="text-sm font-semibold text-purple-700 block mb-1">Contatos:</label>
-                                  <p className="text-sm text-purple-800 font-medium flex items-center">
-                                    <Phone className="h-4 w-4 mr-1" />
-                                    {vaga.contatos}
-                                  </p>
-                                </div>
-                              )}
-                              
-                              {vaga.plataforma && (
-                                <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
-                                  <label className="text-sm font-semibold text-orange-700 block mb-1">Plataforma:</label>
-                                  <p className="text-sm text-orange-800 font-medium flex items-center">
-                                    <Globe className="h-4 w-4 mr-1" />
-                                    {vaga.plataforma}
-                                  </p>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </div>
+                    <div className="max-w-4xl mx-auto">
+                      {/* Botões de Ação */}
+                      <div className="flex flex-wrap gap-3 mb-6">
+                        <button
+                          onClick={() => openVagaInfoModal(vaga)}
+                          className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                        >
+                          <Info className="h-4 w-4 mr-2" />
+                          Ver Informações Completas
+                        </button>
+                        
+                        <button
+                          onClick={() => openAnaliseRiscoModal(vaga)}
+                          className="inline-flex items-center px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
+                        >
+                          <Shield className="h-4 w-4 mr-2" />
+                          Análise de Risco Detalhada
+                        </button>
+                        
+                        {vaga.url_vaga && (
+                          <a
+                            href={vaga.url_vaga}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
+                          >
+                            <ExternalLink className="h-4 w-4 mr-2" />
+                            Ver Vaga Original
+                          </a>
+                        )}
                       </div>
 
-                      {/* Análise de Risco */}
-                      <div className="space-y-6">
-                        <div className="bg-white rounded-lg p-5 border border-gray-200">
-                          <h4 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                            <Shield className="h-5 w-5 mr-2 text-red-600" />
-                            Análise de Risco
-                          </h4>
-                          
-                          {/* Alertas */}
-                          {vaga.alertas && vaga.alertas.length > 0 && (
-                            <div className="mb-6">
-                              <label className="text-sm font-semibold text-gray-700 block mb-3">Alertas Encontrados:</label>
-                              <div className="space-y-2">
-                                {vaga.alertas.map((alerta, index) => (
-                                  <div key={index} className="flex items-start p-3 bg-red-50 border border-red-200 rounded-lg">
-                                    <AlertTriangle className="h-4 w-4 mr-2 mt-0.5 flex-shrink-0 text-red-500" />
-                                    <p className="text-sm text-red-700">{alerta}</p>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-
-                          {/* Detalhes de Risco */}
-                          <div className="mb-6">
-                            <label className="text-sm font-semibold text-gray-700 block mb-3">Detalhes da Análise:</label>
-                            <div className="space-y-3">
-                              {Object.entries(vaga.detalhes_risco).map(([key, value]) => {
-                                const label = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
-                                return (
-                                  <div key={key} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                    <span className="text-sm font-medium text-gray-700">{label}:</span>
-                                    <div className="flex items-center gap-3">
-                                      <div className="w-20 bg-gray-200 rounded-full h-2">
-                                        <div
-                                          className={`h-2 rounded-full transition-all duration-300 ${
-                                            value <= 30 ? 'bg-green-500' :
-                                            value <= 60 ? 'bg-yellow-500' :
-                                            value <= 85 ? 'bg-orange-500' : 'bg-red-500'
-                                          }`}
-                                          style={{ width: `${value}%` }}
-                                        />
-                                      </div>
-                                      <span className="text-sm font-bold text-gray-900 w-8 text-right">{value}%</span>
-                                    </div>
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          </div>
-
-                          {/* Recomendações Detalhadas */}
-                          {vaga.recomendacoes_detalhadas && vaga.recomendacoes_detalhadas.length > 0 && (
-                            <div>
-                              <label className="text-sm font-semibold text-gray-700 block mb-3">Recomendações Detalhadas:</label>
-                              <div className="space-y-4">
-                                {vaga.recomendacoes_detalhadas.map((rec, index) => (
-                                  <div key={index} className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                                    <h5 className="text-sm font-bold text-blue-900 mb-2">{rec.titulo}</h5>
-                                    {rec.paragrafoProblematico && (
-                                      <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-3">
-                                        <p className="text-xs font-semibold text-red-800 mb-1">Texto problemático:</p>
-                                        <p className="text-sm text-red-700 italic">"{rec.paragrafoProblematico}"</p>
-                                      </div>
-                                    )}
-                                    <p className="text-sm text-blue-800 leading-relaxed">{rec.explicacao}</p>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
                     </div>
                   </div>
                 )}
@@ -560,6 +713,341 @@ const DadosOportunidadesPage: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Modal de Informações da Vaga */}
+      {modalVagaInfo && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+            {/* Header do Modal */}
+            <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 text-white">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <FileText className="h-6 w-6 mr-3" />
+                  <div>
+                    <h3 className="text-xl font-bold">Informações Completas da Vaga</h3>
+                    <p className="text-blue-100 text-sm">{modalVagaInfo.titulo}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={closeVagaInfoModal}
+                  className="p-2 hover:bg-blue-800 rounded-lg transition-colors"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Conteúdo do Modal */}
+            <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Informações Básicas */}
+                <div className="space-y-6">
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                      <Building className="h-5 w-5 mr-2 text-blue-600" />
+                      Informações Básicas
+                    </h4>
+                    
+                    <div className="space-y-4">
+                      {modalVagaInfo.empresa && (
+                        <div>
+                          <label className="text-sm font-semibold text-gray-700 block mb-1">Empresa:</label>
+                          <p className="text-sm text-gray-800 bg-white p-3 rounded-lg border">{modalVagaInfo.empresa}</p>
+                        </div>
+                      )}
+                      
+                      {modalVagaInfo.localizacao && (
+                        <div>
+                          <label className="text-sm font-semibold text-gray-700 block mb-1">Localização:</label>
+                          <p className="text-sm text-gray-800 bg-white p-3 rounded-lg border flex items-center">
+                            <MapPin className="h-4 w-4 mr-2 text-gray-500" />
+                            {modalVagaInfo.localizacao}
+                          </p>
+                        </div>
+                      )}
+                      
+                      {modalVagaInfo.remuneracao && (
+                        <div>
+                          <label className="text-sm font-semibold text-gray-700 block mb-1">Remuneração:</label>
+                          <p className="text-sm text-gray-800 bg-white p-3 rounded-lg border flex items-center">
+                            <DollarSign className="h-4 w-4 mr-2 text-green-500" />
+                            <span className="font-medium text-green-600">{modalVagaInfo.remuneracao}</span>
+                          </p>
+                        </div>
+                      )}
+                      
+                      {modalVagaInfo.plataforma && (
+                        <div>
+                          <label className="text-sm font-semibold text-gray-700 block mb-1">Plataforma:</label>
+                          <p className="text-sm text-gray-800 bg-white p-3 rounded-lg border flex items-center">
+                            <Globe className="h-4 w-4 mr-2 text-orange-500" />
+                            {modalVagaInfo.plataforma}
+                          </p>
+                        </div>
+                      )}
+                      
+                      {modalVagaInfo.contatos && (
+                        <div>
+                          <label className="text-sm font-semibold text-gray-700 block mb-1">Contatos:</label>
+                          <p className="text-sm text-gray-800 bg-white p-3 rounded-lg border flex items-center">
+                            <Phone className="h-4 w-4 mr-2 text-purple-500" />
+                            {modalVagaInfo.contatos}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Benefícios */}
+                  {modalVagaInfo.beneficios && (
+                    <div className="bg-green-50 rounded-lg p-5 border border-green-200">
+                      <h4 className="text-lg font-semibold text-green-800 mb-3">Benefícios Oferecidos</h4>
+                      <p className="text-sm text-green-700 leading-relaxed">{modalVagaInfo.beneficios}</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Descrição e Requisitos */}
+                <div className="space-y-6">
+                  {modalVagaInfo.descricao && (
+                    <div className="bg-white rounded-lg p-5 border border-gray-200">
+                      <h4 className="text-lg font-semibold text-gray-900 mb-3">Descrição da Vaga</h4>
+                      <div className="prose prose-sm max-w-none">
+                        <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
+                          {modalVagaInfo.descricao}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {modalVagaInfo.requisitos && (
+                    <div className="bg-white rounded-lg p-5 border border-gray-200">
+                      <h4 className="text-lg font-semibold text-gray-900 mb-3">Requisitos</h4>
+                      <div className="prose prose-sm max-w-none">
+                        <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
+                          {modalVagaInfo.requisitos}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Texto Original */}
+                  {modalVagaInfo.texto_original && (
+                    <div className="bg-gray-50 rounded-lg p-5 border border-gray-200">
+                      <h4 className="text-lg font-semibold text-gray-900 mb-3">Texto Original Completo</h4>
+                      <div className="max-h-60 overflow-y-auto bg-white p-4 rounded-lg border">
+                        <p className="text-xs text-gray-600 leading-relaxed whitespace-pre-wrap">
+                          {modalVagaInfo.texto_original}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Informações de Análise */}
+              <div className="mt-8 bg-gray-50 rounded-lg p-5">
+                <h4 className="text-lg font-semibold text-gray-900 mb-4">Informações da Análise</h4>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                  <div>
+                    <span className="font-semibold text-gray-700">Data da Análise:</span>
+                    <p className="text-gray-600">{formatDate(modalVagaInfo.data_analise)}</p>
+                  </div>
+                  <div>
+                    <span className="font-semibold text-gray-700">Tipo de Entrada:</span>
+                    <p className="text-gray-600">{modalVagaInfo.tipo_entrada}</p>
+                  </div>
+                  <div>
+                    <span className="font-semibold text-gray-700">Nível de Risco:</span>
+                    <span className={`ml-2 px-2 py-1 rounded-full text-xs font-semibold ${getRiskColor(modalVagaInfo.nivel_risco)}`}>
+                      {modalVagaInfo.nivel_risco} ({modalVagaInfo.pontuacao_risco}%)
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer do Modal */}
+            <div className="bg-gray-50 px-6 py-4 border-t border-gray-200 flex justify-end">
+              <button
+                onClick={closeVagaInfoModal}
+                className="px-6 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Análise de Risco Detalhada */}
+      {modalAnaliseRisco && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden">
+            {/* Header do Modal */}
+            <div className="bg-gradient-to-r from-red-600 to-orange-600 px-6 py-4 text-white">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Shield className="h-6 w-6 mr-3" />
+                  <div>
+                    <h3 className="text-xl font-bold">Análise de Risco Detalhada</h3>
+                    <p className="text-red-100 text-sm">{modalAnaliseRisco.titulo}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={closeAnaliseRiscoModal}
+                  className="p-2 hover:bg-red-800 rounded-lg transition-colors"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Conteúdo do Modal */}
+            <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+              {/* Alertas Críticos */}
+              {modalAnaliseRisco.alertas && modalAnaliseRisco.alertas.length > 0 && (
+                <div className="mb-8">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <AlertTriangle className="h-5 w-5 mr-2 text-red-500" />
+                    Alertas Críticos Encontrados
+                  </h4>
+                  <div className="grid gap-3">
+                    {modalAnaliseRisco.alertas.map((alerta, index) => (
+                      <div key={index} className="flex items-start p-4 bg-red-50 border-l-4 border-red-400 rounded-r-lg">
+                        <AlertTriangle className="h-5 w-5 mr-3 mt-0.5 flex-shrink-0 text-red-500" />
+                        <p className="text-sm text-red-800 font-medium">{alerta}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Fatores de Risco Analisados */}
+              <div className="mb-8">
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-4 rounded-t-lg border border-blue-200">
+                  <h4 className="text-lg font-semibold text-gray-900 flex items-center">
+                    <Shield className="h-5 w-5 mr-2 text-blue-600" />
+                    Fatores de Risco Analisados
+                  </h4>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Avaliação detalhada de cada fator de risco identificado na oportunidade
+                  </p>
+                </div>
+                <div className="bg-white border-l border-r border-b border-gray-200 rounded-b-lg p-6">
+                  <div className="grid gap-4">
+                    {Object.entries(modalAnaliseRisco.detalhes_risco).map(([key, value]) => {
+                      const label = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                      const riskLevel = value <= 30 ? 'Baixo' : value <= 60 ? 'Médio' : value <= 85 ? 'Alto' : 'Crítico';
+                      const riskColor = value <= 30 ? 'text-green-600' : value <= 60 ? 'text-yellow-600' : value <= 85 ? 'text-orange-600' : 'text-red-600';
+                      const bgColor = value <= 30 ? 'bg-green-50' : value <= 60 ? 'bg-yellow-50' : value <= 85 ? 'bg-orange-50' : 'bg-red-50';
+                      const borderColor = value <= 30 ? 'border-green-200' : value <= 60 ? 'border-yellow-200' : value <= 85 ? 'border-orange-200' : 'border-red-200';
+                      const iconColor = value <= 30 ? 'text-green-500' : value <= 60 ? 'text-yellow-500' : value <= 85 ? 'text-orange-500' : 'text-red-500';
+                      
+                      return (
+                        <div key={key} className={`p-5 rounded-xl border-2 ${bgColor} ${borderColor} hover:shadow-md transition-all duration-200`}>
+                          <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center">
+                              <div className={`w-10 h-10 rounded-full ${bgColor} flex items-center justify-center mr-3`}>
+                                <Shield className={`h-5 w-5 ${iconColor}`} />
+                              </div>
+                              <h5 className="text-base font-semibold text-gray-800">{label}</h5>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <div className="text-right">
+                                <div className={`text-2xl font-bold ${riskColor}`}>{value}%</div>
+                                <div className={`text-xs font-medium ${riskColor}`}>Risco</div>
+                              </div>
+                              <span className={`text-xs px-3 py-1.5 rounded-full font-semibold ${riskColor} ${bgColor} border ${borderColor}`}>
+                                {riskLevel}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                            <div
+                              className={`h-3 rounded-full transition-all duration-700 ${
+                                value <= 30 ? 'bg-gradient-to-r from-green-400 to-green-500' :
+                                value <= 60 ? 'bg-gradient-to-r from-yellow-400 to-yellow-500' :
+                                value <= 85 ? 'bg-gradient-to-r from-orange-400 to-orange-500' : 
+                                'bg-gradient-to-r from-red-400 to-red-500'
+                              }`}
+                              style={{ width: `${value}%` }}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {/* Recomendações de Segurança */}
+              {modalAnaliseRisco.recomendacoes_detalhadas && modalAnaliseRisco.recomendacoes_detalhadas.length > 0 && (
+                <div>
+                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 px-6 py-4 rounded-t-lg border border-green-200">
+                    <h4 className="text-lg font-semibold text-gray-900 flex items-center">
+                      <Shield className="h-5 w-5 mr-2 text-green-600" />
+                      Recomendações de Segurança
+                    </h4>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Orientações específicas para proteger-se contra possíveis fraudes e riscos
+                    </p>
+                  </div>
+                  <div className="bg-white border-l border-r border-b border-gray-200 rounded-b-lg p-6">
+                    <div className="grid gap-6">
+                      {modalAnaliseRisco.recomendacoes_detalhadas.map((rec, index) => (
+                        <div key={index} className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-6 hover:shadow-lg transition-all duration-200">
+                          <div className="flex items-start">
+                            <div className="flex-shrink-0">
+                              <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center shadow-lg">
+                                <span className="text-white font-bold text-lg">{index + 1}</span>
+                              </div>
+                            </div>
+                            <div className="ml-5 flex-1">
+                              <div className="flex items-center mb-3">
+                                <h5 className="text-lg font-bold text-blue-900">{rec.titulo}</h5>
+                                <div className="ml-3 px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
+                                  Recomendação {index + 1}
+                                </div>
+                              </div>
+                              
+                              {rec.paragrafoProblematico && (
+                                <div className="bg-red-50 border-2 border-red-200 rounded-lg p-4 mb-4">
+                                  <div className="flex items-center mb-2">
+                                    <AlertTriangle className="h-4 w-4 text-red-500 mr-2" />
+                                    <p className="text-sm font-semibold text-red-800">Texto problemático identificado:</p>
+                                  </div>
+                                  <div className="bg-white border border-red-200 rounded-lg p-3">
+                                    <p className="text-sm text-red-700 italic leading-relaxed">"{rec.paragrafoProblematico}"</p>
+                                  </div>
+                                </div>
+                              )}
+                              
+                              <div className="bg-white border border-blue-200 rounded-lg p-4">
+                                <p className="text-sm text-blue-800 leading-relaxed font-medium">{rec.explicacao}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Footer do Modal */}
+            <div className="bg-gray-50 px-6 py-4 border-t border-gray-200 flex justify-end">
+              <button
+                onClick={closeAnaliseRiscoModal}
+                className="px-6 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

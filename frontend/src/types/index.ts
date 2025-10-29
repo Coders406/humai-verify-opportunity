@@ -91,3 +91,26 @@ export interface DadosVaga {
   contatos?: string;
   plataforma?: string;
 }
+
+export interface EstatisticasResponse {
+  total_vagas: number;
+  alto_risco: number;
+}
+
+export interface TopEmpresaRisco {
+  empresa: string;
+  total_vagas_alto_risco: number;
+}
+
+export interface TopEmpresasResponse {
+  empresas: TopEmpresaRisco[];
+}
+
+export interface TopDominioRisco {
+  dominio: string;
+  total_vagas_alto_risco: number;
+}
+
+export interface TopDominiosResponse {
+  dominios: TopDominioRisco[];
+}

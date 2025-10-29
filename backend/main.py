@@ -779,6 +779,134 @@ async def obter_estatisticas():
         print(f"Erro ao obter estatísticas: {e}")
         raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
 
+@app.get("/vagas/top-empresas-risco")
+async def obter_top_empresas_risco():
+    """Obtém as 4 empresas com mais vagas de alto risco"""
+    try:
+        # Pipeline de agregação para contar vagas de alto risco por empresa
+        pipeline = [
+            {
+                "$match": {
+                    "nivel_risco": {"$in": ["ALTO", "CRITICO"]},
+                    "empresa": {
+                        "$exists": True, 
+                        "$ne": None, 
+                        "$ne": "",
+                        "$nin": ["Empresa anónima", "Agência de recrutamento (não especificada)", "Agência de Recrutamento (Nome não especificado)", "Não especificada", "N/A", "n/a", "Não informado"]
+                    }
+                }
+            },
+            {
+                "$group": {
+                    "_id": "$empresa",
+                    "total_vagas_alto_risco": {"$sum": 1},
+                    "empresa": {"$first": "$empresa"}
+                }
+            },
+            {
+                "$sort": {"total_vagas_alto_risco": -1}
+            },
+            {
+                "$limit": 4
+            },
+            {
+                "$project": {
+                    "_id": 0,
+                    "empresa": 1,
+                    "total_vagas_alto_risco": 1
+                }
+            }
+        ]
+        
+        empresas = []
+        async for empresa in vagas_collection.aggregate(pipeline):
+            empresas.append(empresa)
+        
+        return {"empresas": empresas}
+    except Exception as e:
+        print(f"Erro ao obter top empresas de risco: {e}")
+        raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
+
+@app.get("/vagas/top-dominios-risco")
+async def obter_top_dominios_risco():
+    """Obtém os 4 domínios com mais vagas de alto risco"""
+    try:
+        # Pipeline de agregação para contar vagas de alto risco por domínio
+        pipeline = [
+            {
+                "$match": {
+                    "nivel_risco": {"$in": ["ALTO", "CRITICO"]}
+                }
+            },
+            {
+                "$addFields": {
+                    "dominio": {
+                        "$cond": {
+                            "if": {
+                                "$and": [
+                                    {"$ne": ["$url_vaga", None]},
+                                    {"$ne": ["$url_vaga", ""]},
+                                    {"$ne": [{"$type": "$url_vaga"}, "missing"]}
+                                ]
+                            },
+                            "then": {
+                                "$arrayElemAt": [
+                                    {"$split": [{"$arrayElemAt": [{"$split": ["$url_vaga", "://"]}, 1]}, "/"]},
+                                    0
+                                ]
+                            },
+                            "else": {
+                                "$cond": {
+                                    "if": {"$ne": ["$tipo_entrada", None]},
+                                    "then": "Análise por texto",
+                                    "else": "Fonte não especificada"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "$match": {
+                    "dominio": {
+                        "$exists": True, 
+                        "$ne": None, 
+                        "$ne": "",
+                        "$nin": ["localhost", "127.0.0.1", None]
+                    }
+                }
+            },
+            {
+                "$group": {
+                    "_id": "$dominio",
+                    "total_vagas_alto_risco": {"$sum": 1},
+                    "dominio": {"$first": "$dominio"}
+                }
+            },
+            {
+                "$sort": {"total_vagas_alto_risco": -1}
+            },
+            {
+                "$limit": 4
+            },
+            {
+                "$project": {
+                    "_id": 0,
+                    "dominio": 1,
+                    "total_vagas_alto_risco": 1
+                }
+            }
+        ]
+        
+        dominios = []
+        async for dominio in vagas_collection.aggregate(pipeline):
+            dominios.append(dominio)
+        
+        return {"dominios": dominios}
+    except Exception as e:
+        print(f"Erro ao obter top domínios de risco: {e}")
+        raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
+
 @app.get("/vagas/{vaga_id}")
 async def obter_vaga(vaga_id: str):
     """Obtém uma vaga específica por ID"""
