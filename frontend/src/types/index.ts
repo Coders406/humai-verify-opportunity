@@ -23,6 +23,14 @@ export interface RecomendacaoDetalhada {
   paragrafoProblematico?: string;
 }
 
+export interface UrlTrustInfo {
+  is_trusted: boolean;
+  trust_level: 'HIGH' | 'LOW' | 'UNKNOWN';
+  trust_reason: string;
+  domain_type: 'JOB_PORTAL' | 'GOVERNMENT_ORGANIZATION' | 'TECH_COMPANY' | 'LOCAL_COMPANY' | 'NEWS_SITE' | 'NGO' | 'TRUSTED_DOMAIN' | 'UNKNOWN';
+  domain?: string;
+}
+
 export interface AnaliseResultado {
   nivelRisco: 'BAIXO' | 'MEDIO' | 'ALTO' | 'CRITICO';
   pontuacao: number;
@@ -51,6 +59,24 @@ export interface AnaliseResultado {
     emailSuspeito?: string;
     urlSuspeita?: string;
   };
+  explicacoesDetalhes?: {
+    tituloSuspeito?: string;
+    empresaSuspeita?: string;
+    descricaoVaga?: string;
+    requisitosVagos?: string;
+    salarioIrreal?: string;
+    contatoSuspeito?: string;
+    plataformaSuspeita?: string;
+    emailSuspeito?: string;
+    urlSuspeita?: string;
+  };
+}
+
+export interface RespostaAnalise {
+  analise: AnaliseResultado;
+  dadosVaga: DadosVaga;
+  textoOriginal: string;
+  urlTrustInfo?: UrlTrustInfo;
 }
 
 export interface DadosVaga {
@@ -64,10 +90,4 @@ export interface DadosVaga {
   beneficios?: string;
   contatos?: string;
   plataforma?: string;
-}
-
-export interface RespostaAnalise {
-  analise: AnaliseResultado;
-  dadosVaga: DadosVaga;
-  textoOriginal: string;
 }

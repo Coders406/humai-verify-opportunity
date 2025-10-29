@@ -21,6 +21,35 @@ if not api_key or len(api_key) < 10:
     raise ValueError("API key inválida. Verifique o arquivo .env")
 
 genai.configure(api_key=api_key)
+
+# Configurações de segurança para evitar loops infinitos
+generation_config = {
+    "temperature": 0.1,
+    "top_p": 0.8,
+    "top_k": 40,
+    "max_output_tokens": 4000,
+    "stop_sequences": ["```", "---", "==="]
+}
+
+safety_settings = [
+    {
+        "category": "HARM_CATEGORY_HARASSMENT",
+        "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+    },
+    {
+        "category": "HARM_CATEGORY_HATE_SPEECH",
+        "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+    },
+    {
+        "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+        "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+    },
+    {
+        "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+        "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+    }
+]
+
 model = genai.GenerativeModel('gemini-2.0-flash')
 
 # Configuração do MongoDB
@@ -47,6 +76,156 @@ HEADERS = {
 
 # Cache simples
 _cache = {}
+
+# URLs confiáveis conhecidas
+TRUSTED_DOMAINS = {
+    # Sites de empregos confiáveis
+    'linkedin.com', 'linkedin.co.mz',
+    'indeed.com', 'indeed.co.mz',
+    'glassdoor.com', 'glassdoor.co.mz',
+    'reed.co.uk', 'reed.co.mz',
+    'emprego.co.mz', 'emprego.co.za',
+    'jobartis.co.mz', 'jobartis.co.za',
+    'jobs.co.mz', 'jobs.co.za',
+    'vagas.co.mz', 'vagas.co.za',
+    
+    # Sites de empresas conhecidas
+    'unodc.org', 'un.org',
+    'microsoft.com', 'google.com', 'apple.com',
+    'amazon.com', 'facebook.com', 'meta.com',
+    'netflix.com', 'spotify.com', 'uber.com',
+    'airbnb.com', 'tesla.com', 'spacex.com',
+    'ibm.com', 'oracle.com', 'salesforce.com',
+    'adobe.com', 'intel.com', 'nvidia.com',
+    'cisco.com', 'vmware.com', 'redhat.com',
+    
+    # Sites governamentais
+    'gov.mz', 'gov.za', 'gov.br', 'gov.uk',
+    'un.org', 'worldbank.org', 'imf.org',
+    'who.int', 'unicef.org', 'undp.org',
+    
+    # Sites educacionais
+    'harvard.edu', 'mit.edu', 'stanford.edu',
+    'cambridge.ac.uk', 'oxford.ac.uk',
+    'up.ac.za', 'uct.ac.za', 'wits.ac.za',
+    'uem.mz', 'up.ac.mz', 'isctem.ac.mz',
+    
+    # Sites de notícias confiáveis
+    'bbc.com', 'cnn.com', 'reuters.com',
+    'dw.com', 'france24.com', 'aljazeera.com',
+    'rt.com', 'sputniknews.com',
+    'noticias.sapo.mz', 'opais.co.mz',
+    'jornalnoticias.co.mz', 'verdade.co.mz',
+    
+    # Sites de ONGs confiáveis
+    'amnesty.org', 'hrw.org', 'transparency.org',
+    'oxfam.org', 'msf.org', 'doctorswithoutborders.org',
+    'redcross.org', 'unicef.org', 'unhcr.org',
+    'wfp.org', 'fao.org', 'ilo.org',
+    
+    # Sites de empresas moçambicanas conhecidas
+    'mcel.co.mz', 'vodacom.co.mz', 'movitel.co.mz',
+    'bci.co.mz', 'bancounico.co.mz', 'bancobci.co.mz',
+    'bancobm.co.mz', 'bancobm.co.mz', 'bancobm.co.mz',
+    'coca-cola.co.mz', 'pepsi.co.mz', 'nestle.co.mz',
+    'unilever.co.mz', 'procter.co.mz', 'gamble.co.mz',
+    'shell.co.mz', 'total.co.mz', 'exxonmobil.co.mz',
+    'sasol.co.mz', 'sasol.co.za', 'sasol.com',
+    'sasol.com', 'sasol.co.za', 'sasol.co.mz',
+}
+
+def is_trusted_url(url: str) -> bool:
+    """
+    Verifica se uma URL é de uma fonte confiável conhecida.
+    """
+    if not url:
+        return False
+    
+    try:
+        # Extrair domínio da URL
+        if not url.startswith(('http://', 'https://')):
+            url = 'https://' + url
+        
+        from urllib.parse import urlparse
+        parsed = urlparse(url)
+        domain = parsed.netloc.lower()
+        
+        # Remover www. se presente
+        if domain.startswith('www.'):
+            domain = domain[4:]
+        
+        # Verificar se o domínio está na lista de confiáveis
+        return domain in TRUSTED_DOMAINS
+    
+    except Exception:
+        return False
+
+def get_url_trust_info(url: str) -> Dict[str, Any]:
+    """
+    Retorna informações sobre a confiabilidade da URL.
+    """
+    if not url:
+        return {
+            'is_trusted': False,
+            'trust_level': 'UNKNOWN',
+            'trust_reason': 'URL não fornecida',
+            'domain_type': 'UNKNOWN'
+        }
+    
+    is_trusted = is_trusted_url(url)
+    
+    if is_trusted:
+        try:
+            from urllib.parse import urlparse
+            parsed = urlparse(url if url.startswith(('http://', 'https://')) else 'https://' + url)
+            domain = parsed.netloc.lower()
+            if domain.startswith('www.'):
+                domain = domain[4:]
+            
+            # Determinar tipo de domínio
+            if any(x in domain for x in ['linkedin', 'indeed', 'glassdoor', 'monster', 'reed', 'totaljobs', 'ziprecruiter', 'careerbuilder', 'simplyhired', 'emprego', 'jobartis', 'jobs', 'vagas', 'trabalho']):
+                domain_type = 'JOB_PORTAL'
+                trust_reason = 'Portal de empregos conhecido (mas mantenha cautela - mesmo portais confiáveis podem ter anúncios falsos)'
+            elif any(x in domain for x in ['unodc', 'un.org', 'gov.', 'edu.', 'worldbank', 'imf', 'who.int', 'unicef', 'undp']):
+                domain_type = 'GOVERNMENT_ORGANIZATION'
+                trust_reason = 'Organização governamental ou internacional confiável'
+            elif any(x in domain for x in ['microsoft', 'google', 'apple', 'amazon', 'facebook', 'meta', 'netflix', 'spotify', 'uber', 'airbnb', 'tesla', 'spacex', 'ibm', 'oracle', 'salesforce', 'adobe', 'intel', 'nvidia', 'cisco', 'vmware', 'redhat']):
+                domain_type = 'TECH_COMPANY'
+                trust_reason = 'Empresa de tecnologia conhecida'
+            elif any(x in domain for x in ['mcel', 'vodacom', 'movitel', 'bci', 'bancounico', 'bancobci', 'bancobm', 'coca-cola', 'pepsi', 'nestle', 'unilever', 'procter', 'gamble', 'shell', 'total', 'exxonmobil', 'sasol']):
+                domain_type = 'LOCAL_COMPANY'
+                trust_reason = 'Empresa local conhecida'
+            elif any(x in domain for x in ['bbc', 'cnn', 'reuters', 'ap.org', 'bloomberg', 'wsj', 'nytimes', 'washingtonpost', 'theguardian', 'independent', 'dw', 'france24', 'aljazeera', 'rt', 'sputniknews', 'noticias.sapo', 'opais', 'jornalnoticias', 'verdade']):
+                domain_type = 'NEWS_SITE'
+                trust_reason = 'Site de notícias confiável'
+            elif any(x in domain for x in ['amnesty', 'hrw', 'transparency', 'oxfam', 'msf', 'doctorswithoutborders', 'redcross', 'unicef', 'unhcr', 'wfp', 'fao', 'ilo']):
+                domain_type = 'NGO'
+                trust_reason = 'ONG confiável'
+            else:
+                domain_type = 'TRUSTED_DOMAIN'
+                trust_reason = 'Domínio confiável conhecido'
+            
+            return {
+                'is_trusted': True,
+                'trust_level': 'HIGH',
+                'trust_reason': trust_reason,
+                'domain_type': domain_type,
+                'domain': domain
+            }
+        except Exception:
+            return {
+                'is_trusted': True,
+                'trust_level': 'HIGH',
+                'trust_reason': 'URL confiável identificada',
+                'domain_type': 'TRUSTED_DOMAIN'
+            }
+    else:
+        return {
+            'is_trusted': False,
+            'trust_level': 'LOW',
+            'trust_reason': 'URL não reconhecida como confiável',
+            'domain_type': 'UNKNOWN'
+        }
 
 class AnalysisRequest(BaseModel):
     tipoEntrada: str
@@ -75,6 +254,7 @@ class VagaCompleta(BaseModel):
     beneficios: Optional[str] = None
     contatos: Optional[str] = None
     plataforma: Optional[str] = None
+    url_trust_info: Optional[Dict[str, Any]] = None
     
     # Análise de risco
     nivel_risco: str
@@ -96,6 +276,7 @@ class AnalysisResult(BaseModel):
     recomendacoesDetalhadas: Optional[list[RecomendacaoItem]] = None
     detalhes: Dict[str, int]
     textosSuspeitos: Optional[Dict[str, Optional[str]]] = None
+    explicacoesDetalhes: Optional[Dict[str, Optional[str]]] = None
 
 class Website:
     """Classe para extração de conteúdo web"""
@@ -258,13 +439,40 @@ Retorne APENAS um JSON com a seguinte estrutura:
             "plataformaSuspeita": "Texto específico da plataforma que é suspeito (se houver)",
             "emailSuspeito": "Email específico que é suspeito (se houver)",
             "urlSuspeita": "URL específica que é suspeita (se houver)"
+        },
+        "explicacoesDetalhes": {
+            "tituloSuspeito": "Explicação do motivo pelo qual o título é suspeito quando percentual >= 31% (baseado nas informações extraídas da vaga)",
+            "empresaSuspeita": "Explicação do motivo pelo qual a empresa é suspeita quando percentual >= 31% (baseado nas informações extraídas da vaga)",
+            "descricaoVaga": "Explicação do motivo pelo qual a descrição é suspeita quando percentual >= 31% (baseado nas informações extraídas da vaga)",
+            "requisitosVagos": "Explicação do motivo pelo qual os requisitos são vagos quando percentual >= 31% (baseado nas informações extraídas da vaga)",
+            "salarioIrreal": "Explicação do motivo pelo qual o salário é irreal quando percentual >= 31% (baseado nas informações extraídas da vaga)",
+            "contatoSuspeito": "Explicação do motivo pelo qual o contato é suspeito quando percentual >= 31% (baseado nas informações extraídas da vaga)",
+            "plataformaSuspeita": "Explicação do motivo pelo qual a plataforma é suspeita quando percentual >= 31% (baseado nas informações extraídas da vaga)",
+            "emailSuspeito": "Explicação do motivo pelo qual o email é suspeito quando percentual >= 31% (baseado nas informações extraídas da vaga)",
+            "urlSuspeita": "Explicação do motivo pelo qual a URL é suspeita quando percentual >= 31% (baseado nas informações extraídas da vaga)"
         }
     }
 }"""
 
     try:
-        response = model.generate_content(system_prompt + "\n\nConteúdo para análise:\n" + conteudo)
+        # Limitar o tamanho do conteúdo para evitar problemas
+        conteudo_limitado = conteudo[:8000] if len(conteudo) > 8000 else conteudo
+        
+        prompt_completo = system_prompt + "\n\nConteúdo para análise:\n" + conteudo_limitado
+        
+        # Gerar conteúdo com o modelo
+        response = model.generate_content(prompt_completo)
+        
+        if not response or not response.text:
+            raise Exception("Resposta vazia do modelo")
+        
+        print(f"Resposta do modelo recebida (tamanho: {len(response.text)})")
+        print(f"Primeiros 200 caracteres: {response.text[:200]}")
+            
         result = extract_json(response.text)
+        
+        if not result:
+            raise Exception("Não foi possível extrair JSON da resposta do modelo")
         
         if result and 'analiseRisco' in result:
             analise = result['analiseRisco']
@@ -309,7 +517,9 @@ Retorne APENAS um JSON com a seguinte estrutura:
                     "emailSuspeito": 0,
                     "urlSuspeita": 0
                 }),
-                textosSuspeitos={k: v for k, v in analise.get('textosSuspeitos', {}).items() if v is not None}
+                textosSuspeitos={k: v for k, v in analise.get('textosSuspeitos', {}).items() if v is not None},
+                explicacoesDetalhes={k: v for k, v in analise.get('explicacoesDetalhes', {}).items() 
+                                     if v is not None and analise.get('detalhes', {}).get(k, 0) >= 31}
             ), dados_vaga
         else:
             # Fallback se não conseguir extrair JSON - incluir recomendações genéricas
@@ -337,10 +547,15 @@ Retorne APENAS um JSON com a seguinte estrutura:
                     "emailSuspeito": 0,
                     "urlSuspeita": 0
                 },
-                textosSuspeitos={}
+                textosSuspeitos={},
+                explicacoesDetalhes={}
             ), {}
     except Exception as e:
         print(f"Erro na análise LLM: {e}")
+        print(f"Tipo do erro: {type(e).__name__}")
+        import traceback
+        traceback.print_exc()
+        
         # Incluir recomendações genéricas mesmo em caso de erro
         recomendacoes_erro = get_recomendacoes_genericas()
         return AnalysisResult(
@@ -366,7 +581,8 @@ Retorne APENAS um JSON com a seguinte estrutura:
                 "emailSuspeito": 0,
                 "urlSuspeita": 0
             },
-            textosSuspeitos={}
+            textosSuspeitos={},
+            explicacoesDetalhes={}
         ), {}
 
 async def salvar_vaga_no_banco(vaga_data: dict) -> str:
@@ -412,7 +628,43 @@ async def analyze_opportunity(request: AnalysisRequest):
             raise HTTPException(status_code=400, detail="Conteúdo muito curto ou vazio")
         
         # Analisar com LLM
+        print(f"Iniciando análise LLM para tipo: {request.tipoEntrada}")
+        print(f"Tamanho do conteúdo: {len(conteudo)}")
         resultado, dados_vaga = analisar_oportunidade_llm(conteudo)
+        print(f"Análise LLM concluída. Nível de risco: {resultado.nivelRisco}")
+        
+        # Verificar confiabilidade da URL se for link
+        url_trust_info = None
+        if request.tipoEntrada == "LINK" and request.linkOportunidade:
+            url_trust_info = get_url_trust_info(request.linkOportunidade)
+            
+            # Se a URL for confiável, ajustar a análise
+            if url_trust_info.get('is_trusted', False):
+                domain_type = url_trust_info.get('domain_type', 'UNKNOWN')
+                
+                # Reduzir pontuação de URL suspeita apenas para organizações governamentais e empresas conhecidas
+                if domain_type in ['GOVERNMENT_ORGANIZATION', 'TECH_COMPANY', 'LOCAL_COMPANY', 'NEWS_SITE', 'NGO']:
+                    if 'urlSuspeita' in resultado.detalhes:
+                        resultado.detalhes['urlSuspeita'] = 0
+                
+                # Adicionar recomendação apropriada baseada no tipo de domínio
+                if not resultado.recomendacoesDetalhadas:
+                    resultado.recomendacoesDetalhadas = []
+                
+                if domain_type == 'JOB_PORTAL':
+                    # Para portais de empregos, adicionar recomendação de cautela
+                    resultado.recomendacoesDetalhadas.insert(0, RecomendacaoItem(
+                        titulo="Portal de empregos conhecido - mas mantenha cautela",
+                        explicacao=f"A oportunidade foi encontrada em {url_trust_info.get('trust_reason', 'um portal de empregos conhecido')}. Mesmo portais confiáveis podem ter anúncios falsos ou golpes. Sempre verifique a legitimidade da empresa e do anúncio antes de prosseguir.",
+                        paragrafoProblematico=None
+                    ))
+                else:
+                    # Para outras fontes confiáveis, adicionar recomendação positiva
+                    resultado.recomendacoesDetalhadas.insert(0, RecomendacaoItem(
+                        titulo="URL de fonte confiável identificada",
+                        explicacao=f"A oportunidade foi encontrada em {url_trust_info.get('trust_reason', 'uma fonte confiável')}. Isso é um indicador positivo de legitimidade, mas ainda assim mantenha as precauções de segurança.",
+                        paragrafoProblematico=None
+                    ))
         
         # Preparar dados para salvar no banco
         vaga_data = {
@@ -429,6 +681,7 @@ async def analyze_opportunity(request: AnalysisRequest):
             "beneficios": dados_vaga.get("beneficios"),
             "contatos": dados_vaga.get("contatos"),
             "plataforma": dados_vaga.get("plataforma"),
+            "url_trust_info": url_trust_info,
             "nivel_risco": resultado.nivelRisco,
             "pontuacao_risco": resultado.pontuacao,
             "alertas": resultado.alertas,
@@ -447,7 +700,8 @@ async def analyze_opportunity(request: AnalysisRequest):
         response_data = {
             "analise": resultado.model_dump(),
             "dadosVaga": dados_vaga,
-            "textoOriginal": conteudo
+            "textoOriginal": conteudo,
+            "urlTrustInfo": url_trust_info
         }
         
         return response_data

@@ -91,4 +91,3 @@ VITE_APP_DENUNCIA_URL=http://localhost:3000/denuncia-publica
 ## 📄 Licença
 
 Este projeto faz parte do sistema HUMAI para combate ao tráfico humano em Moçambique.
-# humai-verify-opportunity
