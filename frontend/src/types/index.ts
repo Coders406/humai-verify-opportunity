@@ -45,7 +45,6 @@ export interface AnaliseResultado {
     salarioIrreal: number;
     contatoSuspeito: number;
     plataformaSuspeita: number;
-    emailSuspeito: number;
     urlSuspeita: number;
   };
   textosSuspeitos?: {
@@ -56,7 +55,6 @@ export interface AnaliseResultado {
     salarioIrreal?: string;
     contatoSuspeito?: string;
     plataformaSuspeita?: string;
-    emailSuspeito?: string;
     urlSuspeita?: string;
   };
   explicacoesDetalhes?: {
@@ -67,7 +65,6 @@ export interface AnaliseResultado {
     salarioIrreal?: string;
     contatoSuspeito?: string;
     plataformaSuspeita?: string;
-    emailSuspeito?: string;
     urlSuspeita?: string;
   };
 }

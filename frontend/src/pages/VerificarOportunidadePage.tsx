@@ -3,9 +3,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Search, AlertTriangle, CheckCircle, XCircle, Loader2, Shield, AlertCircle, Briefcase, MapPin, DollarSign, Clock, Users, FileText, Link as LinkIcon, Copy, Wand2, LogIn, LogOut, User } from 'lucide-react';
+import { ArrowLeft, Search, AlertTriangle, CheckCircle, XCircle, Loader2, Shield, AlertCircle, Briefcase, MapPin, DollarSign, FileText, Link as LinkIcon, Copy, Wand2, LogIn, LogOut, User } from 'lucide-react';
 import { OportunidadeFormData, AnaliseResultado, RespostaAnalise, DadosVaga } from '@/types';
-import { config } from '@/config';
+// import { config } from '@/config';
 import { useAuth } from '../hooks/useAuth';
 
 const oportunidadeSchema = z.object({
@@ -36,8 +36,8 @@ export default function VerificarOportunidadePage() {
   const [resultado, setResultado] = useState<AnaliseResultado | null>(null);
   const [dadosVaga, setDadosVaga] = useState<DadosVaga | null>(null);
   const [textoOriginal, setTextoOriginal] = useState<string>('');
-  const [isExtracting, setIsExtracting] = useState(false);
-  const [tipoEntrada, setTipoEntrada] = useState<'LINK' | 'TEXTO'>('LINK');
+  // const [isExtracting, setIsExtracting] = useState(false);
+  // const [tipoEntrada, setTipoEntrada] = useState<'LINK' | 'TEXTO'>('LINK');
   const [mostrarTextoCompleto, setMostrarTextoCompleto] = useState(false);
   const [urlTrustInfo, setUrlTrustInfo] = useState<any>(null);
 
@@ -63,67 +63,18 @@ export default function VerificarOportunidadePage() {
   });
 
   const watchedTipoEntrada = watch('tipoEntrada');
-  const watchedTextoPublicacao = watch('textoPublicacao');
+  // const watchedTextoPublicacao = watch('textoPublicacao');
 
-  // Função para extrair dados automaticamente
+  // Função para extrair dados automaticamente (comentada temporariamente)
+  /*
   const extrairDadosAutomaticamente = async (link?: string, texto?: string) => {
-    setIsExtracting(true);
-    
-    try {
-      // Simular tempo de extração
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      let dadosExtraidos: Partial<OportunidadeFormData> = {};
-      
-      if (link) {
-        // Simulação de extração de dados de link
-        dadosExtraidos = {
-          titulo: 'Assistente Administrativo - Empresa ABC',
-          empresa: 'Empresa ABC Ltda',
-          descricao: 'Procuramos assistente administrativo para trabalhar em escritório moderno. Responsabilidades incluem atendimento ao cliente, organização de documentos e apoio geral.',
-          requisitos: 'Ensino médio completo, experiência mínima de 1 ano, conhecimento em informática básica, boa comunicação.',
-          remuneracao: 'R$ 2.500,00',
-          localizacao: 'Maputo, Moçambique',
-          tipoOportunidade: 'EMPREGO' as const,
-          beneficios: 'Vale refeição, plano de saúde, ambiente de trabalho agradável',
-          contato: 'Email: rh@empresaabc.com | Telefone: +258 21 123 4567',
-          plataforma: 'LinkedIn',
-        };
-      } else if (texto) {
-        // Simulação de extração de dados de texto
-        const linhas = texto.split('\n').filter(linha => linha.trim());
-        
-        dadosExtraidos = {
-          titulo: linhas[0] || 'Oportunidade Extraída',
-          empresa: 'Empresa Extraída',
-          descricao: texto.substring(0, 200) + '...',
-          requisitos: 'Requisitos extraídos do texto',
-          remuneracao: 'A definir',
-          localizacao: 'Localização extraída',
-          tipoOportunidade: 'EMPREGO' as const,
-          beneficios: 'Benefícios conforme descrito',
-          contato: 'Contato extraído do texto',
-          plataforma: 'Rede Social',
-        };
-      }
-      
-      // Preencher os campos automaticamente
-      Object.entries(dadosExtraidos).forEach(([key, value]) => {
-        if (value) {
-          setValue(key as keyof OportunidadeFormData, value);
-        }
-      });
-      
-    } catch (error) {
-      console.error('Erro ao extrair dados:', error);
-    } finally {
-      setIsExtracting(false);
-    }
+    // Função comentada para evitar erros de build
   };
+  */
 
   const analisarOportunidade = async (data: OportunidadeFormData): Promise<RespostaAnalise> => {
     try {
-      const response = await fetch('http://localhost:8000/analyze', {
+      const response = await fetch(`${(import.meta as any).env.VITE_API_URL || 'http://localhost:8000'}/analyze`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -152,7 +103,7 @@ export default function VerificarOportunidadePage() {
           nivelRisco: 'MEDIO',
           pontuacao: 50,
           alertas: [`Erro na análise automática: ${error instanceof Error ? error.message : 'Erro desconhecido'}. Verifique manualmente.`],
-          recomendacoes: ['Verifique a oportunidade com cuidado', 'Certifique-se de que o backend está rodando em http://localhost:8000'],
+          recomendacoes: ['Verifique a oportunidade com cuidado', 'Certifique-se de que o backend está rodando corretamente'],
           detalhes: {
             tituloSuspeito: 0,
             empresaSuspeita: 0,
@@ -161,7 +112,6 @@ export default function VerificarOportunidadePage() {
             salarioIrreal: 0,
             contatoSuspeito: 0,
             plataformaSuspeita: 0,
-            emailSuspeito: 0,
             urlSuspeita: 0,
           },
         },
@@ -511,41 +461,35 @@ export default function VerificarOportunidadePage() {
                         salarioIrreal: 'Salário Irreal',
                         contatoSuspeito: 'Contato Suspeito',
                         plataformaSuspeita: 'Plataforma Suspeita',
-                        emailSuspeito: 'Email Suspeito',
                         urlSuspeita: 'URL Suspeita'
                       };
                       
                       const label = labels[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
                       
                       // Determinar nível de risco e cores baseado na percentagem
-                      let riskLevel, riskColor, barColor, badgeColor, badgeText;
+                      let riskColor, barColor, badgeColor, badgeText;
                       
                       if (percent === 0) {
-                        riskLevel = 'BAIXO';
                         riskColor = 'text-green-600';
                         barColor = 'bg-green-500';
                         badgeColor = 'bg-green-100 text-green-700';
                         badgeText = 'Baixo Risco';
                       } else if (percent <= 30) {
-                        riskLevel = 'BAIXO';
                         riskColor = 'text-green-600';
                         barColor = 'bg-green-500';
                         badgeColor = 'bg-green-100 text-green-700';
                         badgeText = 'Baixo Risco';
                       } else if (percent <= 60) {
-                        riskLevel = 'MÉDIO';
                         riskColor = 'text-yellow-600';
                         barColor = 'bg-yellow-500';
                         badgeColor = 'bg-yellow-100 text-yellow-700';
                         badgeText = 'Médio Risco';
                       } else if (percent <= 85) {
-                        riskLevel = 'ALTO';
                         riskColor = 'text-orange-600';
                         barColor = 'bg-orange-500';
                         badgeColor = 'bg-orange-100 text-orange-700';
                         badgeText = 'Alto Risco';
                       } else {
-                        riskLevel = 'CRÍTICO';
                         riskColor = 'text-red-600';
                         barColor = 'bg-red-500';
                         badgeColor = 'bg-red-100 text-red-700';
@@ -553,10 +497,10 @@ export default function VerificarOportunidadePage() {
                       }
                       
                       // Verificar se há texto suspeito para este item
-                      const textoSuspeito = resultado.textosSuspeitos?.[key];
+                      const textoSuspeito = resultado.textosSuspeitos?.[key as keyof typeof resultado.textosSuspeitos];
                       
                       // Verificar se há explicação para este item (quando percent >= 31%)
-                      const explicacao = resultado.explicacoesDetalhes?.[key];
+                      const explicacao = resultado.explicacoesDetalhes?.[key as keyof typeof resultado.explicacoesDetalhes];
                       
                       return (
                         <div key={key} className="p-2 xs:p-3 sm:p-4 rounded-lg border bg-white">
@@ -723,7 +667,7 @@ export default function VerificarOportunidadePage() {
                   <button
                     type="button"
                     onClick={() => {
-                      setTipoEntrada('LINK');
+                      // setTipoEntrada('LINK');
                       setValue('tipoEntrada', 'LINK');
                     }}
                     className={`p-2 xs:p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 ${
@@ -746,7 +690,7 @@ export default function VerificarOportunidadePage() {
                   <button
                     type="button"
                     onClick={() => {
-                      setTipoEntrada('TEXTO');
+                      // setTipoEntrada('TEXTO');
                       setValue('tipoEntrada', 'TEXTO');
                     }}
                     className={`p-2 xs:p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 ${

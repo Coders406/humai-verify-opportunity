@@ -1,0 +1,1100 @@
+[{
+  "_id": {
+    "$oid": "6901e9b4d4325fa00225ce66"
+  },
+  "url_vaga": null,
+  "texto_original": "OPORTUNIDADE ÚNICA! Ganhe R$ 15.000 por mês trabalhando de casa! Sem experiência necessária! Trabalho fácil e rápido! Contato apenas por WhatsApp: (11) 99999-9999. Empresa: GlobalTech Solutions. Não perca esta chance! Trabalhe 2 horas por dia e ganhe muito dinheiro!",
+  "tipo_entrada": "TEXTO",
+  "titulo": "OPORTUNIDADE ÚNICA! Ganhe R$ 15.000 por mês trabalhando de casa!",
+  "empresa": "GlobalTech Solutions",
+  "descricao": "Sem experiência necessária! Trabalho fácil e rápido! Não perca esta chance! Trabalhe 2 horas por dia e ganhe muito dinheiro!",
+  "requisitos": "Sem experiência necessária!",
+  "remuneracao": "R$ 15.000 por mês",
+  "localizacao": "Trabalhando de casa",
+  "tipo_oportunidade": "EMPREGO",
+  "beneficios": "Não especificado",
+  "contatos": "(11) 99999-9999 (WhatsApp)",
+  "plataforma": "Não especificada (presumivelmente redes sociais ou similar)",
+  "nivel_risco": "ALTO",
+  "pontuacao_risco": 90,
+  "alertas": [
+    "Título da vaga com promessas exageradas e palavras chamativas.",
+    "Requisitos mínimos ou inexistentes para um salário muito alto.",
+    "Contato exclusivo por WhatsApp, sem e-mail profissional.",
+    "Descrição da vaga com promessas irrealistas de ganhos fáceis e rápidos.",
+    "Falta de detalhes sobre a empresa e suas atividades."
+  ],
+  "recomendacoes": [
+    "Desconfie do título exagerado.",
+    "Cuidado com a promessa de ganhos fáceis.",
+    "Verifique a reputação da empresa.",
+    "Desconfie do contato exclusivo por WhatsApp.",
+    "Analise criticamente a descrição vaga.",
+    "Não forneça informações pessoais sem confirmação."
+  ],
+  "recomendacoes_detalhadas": [
+    {
+      "titulo": "Desconfie do título exagerado",
+      "explicacao": "O título utiliza palavras como 'OPORTUNIDADE ÚNICA' e 'ganhe muito' que são típicas de golpes. Títulos que prometem ganhos exorbitantes com facilidade devem ser encarados com extrema cautela (Critério 1).",
+      "paragrafoProblematico": "OPORTUNIDADE ÚNICA! Ganhe R$ 15.000 por mês trabalhando de casa!"
+    },
+    {
+      "titulo": "Cuidado com a promessa de ganhos fáceis",
+      "explicacao": "A promessa de trabalho 'fácil e rápido' que garante 'muito dinheiro' em apenas 2 horas diárias é irrealista e um forte indício de golpe. O salário oferecido é desproporcional ao esforço e qualificação exigidos (Critérios 3 e 7).",
+      "paragrafoProblematico": "Trabalho fácil e rápido! Trabalhe 2 horas por dia e ganhe muito dinheiro!"
+    },
+    {
+      "titulo": "Verifique a reputação da empresa",
+      "explicacao": "Embora um nome de empresa seja fornecido, é essencial pesquisar a 'GlobalTech Solutions' online para verificar sua existência, reputação e se a vaga realmente existe. A falta de informações concretas sobre a empresa é um alerta (Critério 8).",
+      "paragrafoProblematico": "Empresa: GlobalTech Solutions"
+    },
+    {
+      "titulo": "Desconfie do contato exclusivo por WhatsApp",
+      "explicacao": "A ausência de um e-mail corporativo e o uso exclusivo do WhatsApp para contato dificultam a verificação da legitimidade da empresa e aumentam o risco de fraude. Empresas sérias geralmente fornecem canais de comunicação mais formais (Critério 5).",
+      "paragrafoProblematico": "Contato apenas por WhatsApp: (11) 99999-9999."
+    },
+    {
+      "titulo": "Analise criticamente a descrição vaga",
+      "explicacao": "A falta de requisitos específicos, como experiência ou qualificações, para um salário tão alto é um sinal de alerta. Descrições de vagas legítimas geralmente detalham as habilidades e conhecimentos necessários (Critério 4).",
+      "paragrafoProblematico": "Sem experiência necessária!"
+    },
+    {
+      "titulo": "Não forneça informações pessoais sem confirmação",
+      "explicacao": "Devido aos altos riscos identificados, não forneça informações pessoais, como dados bancários ou documentos, sem verificar cuidadosamente a legitimidade da vaga e da empresa. Procure outras fontes para confirmar a oferta e a reputação da empresa.",
+      "paragrafoProblematico": null
+    }
+  ],
+  "detalhes_risco": {
+    "tituloSuspeito": 95,
+    "empresaSuspeita": 70,
+    "descricaoVaga": 90,
+    "requisitosVagos": 90,
+    "salarioIrreal": 95,
+    "contatoSuspeito": 90,
+    "plataformaSuspeita": 80
+  },
+  "data_analise": {
+    "$date": "2025-10-29T12:17:24.252Z"
+  },
+  "data_criacao": {
+    "$date": "2025-10-29T12:07:42.933Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6901ebc80088a357a72f6e20"
+  },
+  "url_vaga": null,
+  "texto_original": "Vaga: Desenvolvedor Python - Empresa: Microsoft - Salário: R$ 10.000 - Contato: rh@microsoft.com - Descrição: Buscamos desenvolvedor Python com experiência em APIs REST. Requisitos: 3 anos de experiência, conhecimento em Django.",
+  "tipo_entrada": "TEXTO",
+  "titulo": "Desenvolvedor Python",
+  "empresa": "Microsoft",
+  "descricao": "Buscamos desenvolvedor Python com experiência em APIs REST.",
+  "requisitos": "3 anos de experiência, conhecimento em Django.",
+  "remuneracao": "R$ 10.000",
+  "localizacao": "Não especificada",
+  "tipo_oportunidade": "EMPREGO",
+  "beneficios": "Não especificados",
+  "contatos": "rh@microsoft.com",
+  "plataforma": "Não especificada",
+  "nivel_risco": "BAIXO",
+  "pontuacao_risco": 10,
+  "alertas": [],
+  "recomendacoes": [
+    "Verifique a autenticidade do e-mail da Microsoft.",
+    "Pesquise sobre a reputação da Microsoft como empregadora.",
+    "Confirme a existência da vaga no site oficial da Microsoft."
+  ],
+  "recomendacoes_detalhadas": [
+    {
+      "titulo": "Verificar autenticidade do e-mail",
+      "explicacao": "Embora o domínio pareça legítimo, é importante verificar se o endereço de e-mail realmente pertence à Microsoft. Golpistas podem usar endereços de e-mail falsos que se assemelham aos oficiais.",
+      "paragrafoProblematico": "rh@microsoft.com"
+    },
+    {
+      "titulo": "Pesquisar reputação da empresa",
+      "explicacao": "Mesmo sendo uma empresa conhecida, é prudente pesquisar sobre a reputação da Microsoft como empregadora, para confirmar se as condições de trabalho e o salário oferecido são consistentes com as práticas da empresa.",
+      "paragrafoProblematico": "Microsoft"
+    },
+    {
+      "titulo": "Confirmar a existência da vaga",
+      "explicacao": "Para evitar fraudes, é altamente recomendado verificar se a vaga anunciada está listada no site oficial de carreiras da Microsoft. Isso garante que a oportunidade seja legítima e que as informações fornecidas coincidem com as da empresa.",
+      "paragrafoProblematico": "Descrição: Buscamos desenvolvedor Python com experiência em APIs REST."
+    }
+  ],
+  "detalhes_risco": {
+    "tituloSuspeito": 0,
+    "empresaSuspeita": 0,
+    "descricaoVaga": 0,
+    "requisitosVagos": 0,
+    "salarioIrreal": 0,
+    "contatoSuspeito": 10,
+    "plataformaSuspeita": 0
+  },
+  "data_analise": {
+    "$date": "2025-10-29T12:26:16.492Z"
+  },
+  "data_criacao": {
+    "$date": "2025-10-29T12:25:43.295Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6901ebd10088a357a72f6e21"
+  },
+  "url_vaga": null,
+  "texto_original": "Vaga: Desenvolvedor Python - Empresa: Microsoft - Salário: R$ 10.000 - Contato: rh@microsoft.com - Descrição: Buscamos desenvolvedor Python com experiência em APIs REST.",
+  "tipo_entrada": "TEXTO",
+  "titulo": "Desenvolvedor Python",
+  "empresa": "Microsoft",
+  "descricao": "Buscamos desenvolvedor Python com experiência em APIs REST.",
+  "requisitos": "Experiência em APIs REST",
+  "remuneracao": "R$ 10.000",
+  "localizacao": "Não especificado",
+  "tipo_oportunidade": "EMPREGO",
+  "beneficios": "Não especificado",
+  "contatos": "rh@microsoft.com",
+  "plataforma": "Não especificado",
+  "nivel_risco": "BAIXO",
+  "pontuacao_risco": 10,
+  "alertas": [],
+  "recomendacoes": [
+    "Verificar autenticidade do email.",
+    "Pesquisar sobre a vaga no site da Microsoft.",
+    "Comparar o salário com o mercado."
+  ],
+  "recomendacoes_detalhadas": [
+    {
+      "titulo": "Verificar autenticidade do email.",
+      "explicacao": "Embora o e-mail pareça legítimo, é sempre prudente verificar se o domínio 'microsoft.com' realmente pertence à empresa e se o endereço de e-mail é válido no site oficial da Microsoft para evitar phishing.",
+      "paragrafoProblematico": "rh@microsoft.com"
+    },
+    {
+      "titulo": "Pesquisar sobre a vaga no site da Microsoft.",
+      "explicacao": "Confirmar a existência da vaga no site oficial da Microsoft garante a legitimidade da oferta e evita possíveis fraudes. Verificar a descrição da vaga no site oficial também pode fornecer mais detalhes e garantir que a vaga corresponde às suas expectativas.",
+      "paragrafoProblematico": "Não especificado"
+    },
+    {
+      "titulo": "Comparar o salário com o mercado.",
+      "explicacao": "Pesquisar a média salarial para desenvolvedores Python com experiência em APIs REST na sua região ajuda a determinar se a remuneração oferecida está dentro dos padrões de mercado. Um salário muito acima da média pode ser um indicativo de promessas irrealistas ou até mesmo de um golpe.",
+      "paragrafoProblematico": "R$ 10.000"
+    }
+  ],
+  "detalhes_risco": {
+    "tituloSuspeito": 0,
+    "empresaSuspeita": 0,
+    "descricaoVaga": 10,
+    "requisitosVagos": 10,
+    "salarioIrreal": 0,
+    "contatoSuspeito": 0,
+    "plataformaSuspeita": 0
+  },
+  "data_analise": {
+    "$date": "2025-10-29T12:26:25.107Z"
+  },
+  "data_criacao": {
+    "$date": "2025-10-29T12:25:43.295Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6901f08b9d5ff1400baf27e7"
+  },
+  "url_vaga": "https://www.emprego.co.mz/en/vaga/conselheiro-de-negocios-associado-2/",
+  "texto_original": null,
+  "tipo_entrada": "LINK",
+  "titulo": "TechnoServe: Conselheiro de Negócios Associado, Nampula",
+  "empresa": "TechnoServe",
+  "descricao": "A Technoserve está a recrutar um Conselho de Negócios Associado, para Nampula, em Moçambique. Descrição TechnoServe, Inc., é uma Organização Não Governamental sem fins lucrativos, que foi incorporada em 1969 sob as leis do Estado de Nova Iorque, nos EUA. A TechnoServe trabalha com pessoas empreendedoras no mundo em desenvolvimento para construir farmas, empresas e indústrias competitivas. Somos uma organização sem fins lucrativos que desenvolve soluções empresariais para pobreza, interligando as pessoas, à informação, ao capital e os mercados. O nosso trabalho está enraizado na ideia de que, dada a oportunidade aos homens e mulheres trabalhadores, mesmo em lugares mais pobres, podem gerar renda, empregos e riqueza para as suas famílias e comunidades Com mais de cinco décadas de resultados comprovados, acreditamos no poder empresarial privado para transformar vidas. Em Moçambique operamos desde 1998, e desenvolvemos as nossas actividades nas províncias de Cabo Delgado (Pemba), Nampula, Zambézia (Quelimane), Manica (Chimoio), Inhambane (Maxixe) e em Maputo onde está o nosso escritório central Âmbito e Objectivo do Projecto Financiado pela Agência Suíça para Cooperação e Desenvolvimento (SDC), Oholo é um projeto de 2 anos e avaliado em 4. 1 milhões de dólares Americanos. O Projecto tem objectivo de acelerar o crescimento das MPMEs em todos os sectores através do reforço do ecossistema de serviços de desenvolvimento empresarial (BDS), apoiando as MPMEs e os empreendedores — em particular as mulheres e os jovens — e promovendo o crescimento económico, criação de emprego e resiliência. O projeto aproveita as perspectivas adquiridas durante a fase de incepção e transição de intervenção direta para uma abordagem mais abrangente de Desenvolvimento de Sistemas de Mercado. Esta mudança envolve a transferência de conhecimento e perícia para provedores locais de BDS, garantindo assim a escalabilidade e sustentabilidade a longo prazo para todo o mercado de MSME. O projeto pretende fortalecer a capacidade dos provedores de BDS para servir efetivamente uma diversa gama de negócios. Isso será alcançado através de sessões de treinamento direto com a equipe de BDS, bem como o desenvolvimento de modelos de negócios sustentáveis para reforçar os modelos operacionais dos provedores Contexto, Descrição e Responsabilidades do Cargo TechnoServe Moçambique pretende contratar um(a) Conselheiro (a) de Negócios Associado (a) para um período de 4 Meses (Dezembro 2025 - Março 2026), substituindo a actual Conselheira de Negócios que entrará em Licença de Maternidade brevemente O/A Conselheiro(a) de Negócios: Associado será responsável pela identificação, recrutamento, formação e acompanhamento pós-formação, das mulheres e jovens participantes do projecto. Também, será responsável por facilitar as sessões de formação e mentoria, em matérias de habilidades de negócio, literacia financeira, sensibilização sobre o género e promoção de networking entre os empreendedores Desenvolvimento da capacidade das BDS Garantir a assistência das BDS participando do processo de diagnostico, desenho e implementação dos Planos de Acão de Sustentabilidade das BDS, assegurando que ações propostas e discutidas sejam executadas efetivamente. Esta abordagem permitirá igualmente identificar riscos/desafios de forma pontual ao nível da BDS Monitorização, Avaliação e Aprendizagem e outros eventos Garantir a atualização e cumprimento dos cronogramas de atividades de treinamento do programa, comunicando a liderança do projeto de forma proactiva sobre quaisquer potenciais desafios/problemas Capturar sucessos, fracassos e lições aprendidas e partilhar essas lições interna e externamente, e discutir com o Consultor de Negócios-1 Recolher dados relevantes para fins de monitorização, avaliação e aprendizagem (inquéritos de base, intercalares e finais; recolha de dados de rotina, avaliações de formação, boas práticas empresariais) Registar com precisão todos os dados de monitorização e avaliação das intervenções de formação dentro do prazo definido e de acordo com as normas internas de recolha e gestão de dados, e levantar proactivamente preocupações/questões junto da equipa do projeto Apoiar a produzir relatórios semanais, de módulos, de mobilização e de avaliação final Garantir a fiabilidade dos dados de M&amp;A e sugerir melhorias necessárias para um melhor controlo de qualidade Apoiar na organização e posterior reporte dos dados de MEL de eventos como: Workshops, feiras, Capacitações e outros eventos realizados pelo Projeto",
+  "requisitos": "Licenciatura em gestão de empresas, economia, estatística ou desenvolvimento internacional, ou formação académica relevante num campo analítico, com capacidades analíticas comprovadas em estudos de mercado\nExperiência de campo e técnica de 2 anos, na implementação de projectos de desenvolvimento de negócios, desenvolvimento comunitário, empreendedorismo e inclusão financeira, com particular enfoque nas mulheres e jovens localizados nas zonas urbanas e rurais\nExcelentes habilidades interpessoais e de networking; capacidade excepcional para se familiarizar com as práticas da comunidade local e simpatizar e compreender as necessidades das mulheres e jovens empreendedores locais\nExperiência de trabalho com programas de formação e/ou orientação de jovens e mulheres\nCompromisso demonstrado para fazer avançar a igualdade de género\nCapacidade de equilibrar múltiplas prioridades e cumprir prazos exigentes\nFortes capacidades de gestão de projectos, análise financeira e atitude empreendedora\nCapacidade de trabalhar de forma eficaz com supervisão mínima\nDisponibilidade para estar baseado e trabalhar a tempo inteiro com as comunidades rurais\nPostura, maturidade, bom senso e capaz de resolver problemas e gerar soluções inovadoras\nExcelente comunicação verbal\nFluência na língua Portuguesa, fluência em línguas locais será uma vantagem\nExperiência no contexto sócio-económico da região norte, será uma vantagem\nCompreender, respeitar e promover os valores, a visão e a estratégia da TechnoServe na implementação das tarefas atribuídas\nRealizar atividades de transferência do Currículo ao BDS: Facilitar sessões de ”formação de formadores” sobre temas importantes, tais como competências de gestão empresarial; literacia financeira; facilitação e competências de ensino para adultos; sensibilização para as questões de género; e recrutamento sensível ao género Coordenar todas as atividades relacionadas com a preparação de formação e garantir que as práticas operacionais, logísticas e financeiras cumprem as políticas da TechnoServe Apoiar a localização, identificação e integração de mulheres e jovens empreendedores nos ciclos de formação do projeto, de acordo com critérios de seleção definidos Seguir o roteiro, a metodologia e os critérios de formação, incluindo a duração das aulas, respeitando as diretrizes e normas de pontualidade, utilização de materiais, atividades e planos de aula e de trabalho aprovados Garantir que a formação técnica seja de alta qualidade, relevante para o contexto local (utilizando a língua e exemplos locais) e alcance efetivamente os participantes Identificar as principais lacunas de competências nos grupos-alvo em relação às oportunidades económicas locais e fornecer feedback ao supervisor sobre os requisitos/necessidades de formação e propor melhorias ao currículo Fornecer orientação e aconselhamento regulares ao longo do projeto para melhorar o desempenho empresarial e apoiar o desenvolvimento e a implementação de planos de negócios Facilitar um módulo de sensibilização para as questões de género eficaz, culturalmente sensível e de alta qualidade para mulheres e jovens empreendedores, garantindo que a mensagem certa seja transmitida (assegurando que as estratégias de mitigação da violência baseada no género sejam seguidas) e monitorando se as mulheres estão a absorver efetivamente o conhecimento Garantir a implementação da estratégia de género e que as metas de género do projeto sejam cumpridas, bem como apoiar e acompanhar os participantes que enfrentam desafios relacionados com o género, psicossociais e de abandono, comunicando esses desafios à equipa do projeto para apoio e resolução;",
+  "remuneracao": "Não especificado",
+  "localizacao": "Nampula, Moçambique",
+  "tipo_oportunidade": "EMPREGO",
+  "beneficios": "Não especificado",
+  "contatos": "Através do website do empregador: https://recruiting.ultipro.com/TEC1006TESER/JobBoard/18180d88-ced0-4361-bd09-d5eef66dab24/OpportunityDetail?opportunityId=33d1ad7d-1148-4c76-a865-4856c860dd8b",
+  "plataforma": "emprego.co.mz",
+  "nivel_risco": "BAIXO",
+  "pontuacao_risco": 10,
+  "alertas": [],
+  "recomendacoes": [
+    "Verifique a reputação da TechnoServe.",
+    "Confirme a legitimidade da vaga no site da TechnoServe.",
+    "Desconfie de contatos fora dos canais oficiais.",
+    "Proteja suas informações pessoais.",
+    "Esteja atento a sinais de coerção ou pressão."
+  ],
+  "recomendacoes_detalhadas": [
+    {
+      "titulo": "Verifique a reputação da TechnoServe.",
+      "explicacao": "Embora a TechnoServe seja uma organização conhecida, é sempre prudente verificar sua reputação online através de fontes independentes (e.g., sites de avaliação de ONGs, notícias) para confirmar sua legitimidade e histórico.",
+      "paragrafoProblematico": null
+    },
+    {
+      "titulo": "Confirme a legitimidade da vaga no site da TechnoServe.",
+      "explicacao": "Acesse o site oficial da TechnoServe e procure a vaga listada. Compare a descrição da vaga, os requisitos e o processo de candidatura com as informações encontradas no anúncio original. Isso garante que a vaga é real e que você está se candidatando através de um canal oficial.",
+      "paragrafoProblematico": "Através do website do empregador\nhttps://recruiting.ultipro.com/TEC1006TESER/JobBoard/18180d88-ced0-4361-bd09-d5eef66dab24/OpportunityDetail?opportunityId=33d1ad7d-1148-4c76-a865-4856c860dd8b"
+    },
+    {
+      "titulo": "Desconfie de contatos fora dos canais oficiais.",
+      "explicacao": "Esteja ciente de que golpistas podem tentar entrar em contato por canais não oficiais, como WhatsApp ou redes sociais, solicitando informações pessoais ou financeiras. Comunique-se apenas através dos canais fornecidos no site oficial da TechnoServe.",
+      "paragrafoProblematico": null
+    },
+    {
+      "titulo": "Proteja suas informações pessoais.",
+      "explicacao": "Nunca compartilhe informações confidenciais, como número de conta bancária, CPF ou informações de cartão de crédito, a menos que você tenha certeza da legitimidade da vaga e da empresa. Golpistas podem usar essas informações para roubo de identidade ou fraude financeira.",
+      "paragrafoProblematico": null
+    },
+    {
+      "titulo": "Esteja atento a sinais de coerção ou pressão.",
+      "explicacao": "Desconfie se o recrutador pressioná-lo a tomar uma decisão rápida ou a fornecer informações pessoais imediatamente. Golpistas geralmente usam táticas de pressão para manipular as vítimas.",
+      "paragrafoProblematico": null
+    }
+  ],
+  "detalhes_risco": {
+    "tituloSuspeito": 0,
+    "empresaSuspeita": 0,
+    "descricaoVaga": 10,
+    "requisitosVagos": 10,
+    "salarioIrreal": 0,
+    "contatoSuspeito": 0,
+    "plataformaSuspeita": 10,
+    "emailSuspeito": 0,
+    "urlSuspeita": 0
+  },
+  "data_analise": {
+    "$date": "2025-10-29T12:46:35.148Z"
+  },
+  "data_criacao": {
+    "$date": "2025-10-29T12:45:43.702Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6901f0ac9d5ff1400baf27e8"
+  },
+  "url_vaga": null,
+  "texto_original": "GANHE MUITO DINHEIRO FACILMENTE! Trabalho em casa, sem experiência necessária! Salário de R$ 50.000 por mês! Contato: WhatsApp (11) 99999-9999. Não perca esta oportunidade única!",
+  "tipo_entrada": "TEXTO",
+  "titulo": "GANHE MUITO DINHEIRO FACILMENTE!",
+  "empresa": "Não especificada",
+  "descricao": "Trabalho em casa, sem experiência necessária!",
+  "requisitos": "Sem experiência necessária",
+  "remuneracao": "R$ 50.000 por mês",
+  "localizacao": "Trabalho em casa",
+  "tipo_oportunidade": "EMPREGO",
+  "beneficios": "Não especificados",
+  "contatos": "WhatsApp (11) 99999-9999",
+  "plataforma": "Não especificada",
+  "nivel_risco": "CRITICO",
+  "pontuacao_risco": 95,
+  "alertas": [
+    "Título excessivamente chamativo e irreal.",
+    "Empresa não especificada, dificultando a verificação de legitimidade.",
+    "Descrição da vaga vaga e com promessas de ganhos fáceis.",
+    "Requisitos mínimos incompatíveis com a alta remuneração oferecida.",
+    "Contato exclusivo por WhatsApp sem outras formas de comunicação.",
+    "Remuneração extremamente alta, levantando suspeitas sobre a legitimidade da oferta."
+  ],
+  "recomendacoes": [
+    "Desconfie de promessas de ganhos fáceis e rápidos.",
+    "Verifique a existência e reputação da empresa.",
+    "Solicite informações detalhadas sobre a vaga e as responsabilidades.",
+    "Evite fornecer informações pessoais ou financeiras antes de verificar a legitimidade da oferta.",
+    "Não realize pagamentos antecipados para supostas taxas ou materiais.",
+    "Busque outras fontes para confirmar a veracidade da proposta."
+  ],
+  "recomendacoes_detalhadas": [
+    {
+      "titulo": "Desconfie de promessas irreais",
+      "explicacao": "O título utiliza uma linguagem apelativa e exagerada, prometendo ganhos fáceis e rápidos, o que é um forte indício de golpe ou oportunidade enganosa. Promessas irrealistas são frequentemente utilizadas para atrair vítimas.",
+      "paragrafoProblematico": "GANHE MUITO DINHEIRO FACILMENTE!"
+    },
+    {
+      "titulo": "Empresa não identificada é um sinal de alerta",
+      "explicacao": "A ausência de informações sobre a empresa dificulta a verificação da sua legitimidade. Empresas legítimas geralmente fornecem informações claras sobre sua identidade e histórico.",
+      "paragrafoProblematico": "Não especificada"
+    },
+    {
+      "titulo": "Descrição vaga e promessas irrealistas",
+      "explicacao": "A descrição da vaga é vaga e não fornece detalhes sobre as responsabilidades ou atividades a serem realizadas. A promessa de trabalho em casa sem experiência necessária, combinada com a alta remuneração, é um sinal de alerta.",
+      "paragrafoProblematico": "Trabalho em casa, sem experiência necessária!"
+    },
+    {
+      "titulo": "Requisitos mínimos x Salário alto",
+      "explicacao": "A exigência de 'sem experiência necessária' é incompatível com um salário de R$ 50.000 por mês. Em geral, salários elevados requerem habilidades e experiência específicas.",
+      "paragrafoProblematico": "Sem experiência necessária! Salário de R$ 50.000 por mês!"
+    },
+    {
+      "titulo": "Contato exclusivo por WhatsApp é arriscado",
+      "explicacao": "O contato exclusivo por WhatsApp, sem outras formas de comunicação (como e-mail corporativo ou telefone fixo), dificulta a verificação da identidade do recrutador e aumenta o risco de fraude.",
+      "paragrafoProblematico": "Contato: WhatsApp (11) 99999-9999"
+    },
+    {
+      "titulo": "Salário muito acima da média",
+      "explicacao": "Um salário de R$ 50.000 por mês para um trabalho que não exige experiência é altamente improvável e um forte indicativo de golpe. Salários muito acima da média de mercado devem ser encarados com extrema cautela.",
+      "paragrafoProblematico": "Salário de R$ 50.000 por mês!"
+    }
+  ],
+  "detalhes_risco": {
+    "tituloSuspeito": 100,
+    "empresaSuspeita": 100,
+    "descricaoVaga": 90,
+    "requisitosVagos": 95,
+    "salarioIrreal": 100,
+    "contatoSuspeito": 85,
+    "plataformaSuspeita": 0,
+    "emailSuspeito": 0,
+    "urlSuspeita": 0
+  },
+  "data_analise": {
+    "$date": "2025-10-29T12:47:08.943Z"
+  },
+  "data_criacao": {
+    "$date": "2025-10-29T12:45:43.702Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6901f1bc9d5ff1400baf27eb"
+  },
+  "url_vaga": null,
+  "texto_original": "Teste de vaga suspeita: Ganhe muito dinheiro facilmente!",
+  "tipo_entrada": "TEXTO",
+  "titulo": "Ganhe muito dinheiro facilmente!",
+  "empresa": null,
+  "descricao": null,
+  "requisitos": null,
+  "remuneracao": null,
+  "localizacao": null,
+  "tipo_oportunidade": "EMPREGO",
+  "beneficios": null,
+  "contatos": null,
+  "plataforma": null,
+  "nivel_risco": "ALTO",
+  "pontuacao_risco": 85,
+  "alertas": [
+    "Título da vaga contém promessas irrealistas e palavras-chave suspeitas.",
+    "Falta de informações sobre a empresa.",
+    "Descrição da vaga ausente."
+  ],
+  "recomendacoes": [
+    "Desconfie de promessas de ganhos fáceis.",
+    "Pesquise a reputação da empresa antes de se candidatar.",
+    "Solicite detalhes sobre a empresa e a vaga.",
+    "Não forneça informações pessoais sensíveis sem verificar a legitimidade da oferta."
+  ],
+  "recomendacoes_detalhadas": [
+    {
+      "titulo": "Evite promessas de ganhos fáceis e rápidos.",
+      "explicacao": "Títulos que prometem ganhos elevados com facilidade são um forte indício de golpe. Empresas legítimas raramente usam essa linguagem, pois o trabalho honesto geralmente requer esforço e dedicação.",
+      "paragrafoProblematico": "Ganhe muito dinheiro facilmente!"
+    },
+    {
+      "titulo": "Verifique a existência e reputação da empresa.",
+      "explicacao": "A ausência de informações sobre a empresa é preocupante. Pesquise o nome da empresa na internet, verifique se possui CNPJ, endereço físico e avaliações de outros funcionários ou clientes. A falta de informações concretas é um sinal de alerta.",
+      "paragrafoProblematico": null
+    },
+    {
+      "titulo": "Solicite detalhes da vaga e da empresa.",
+      "explicacao": "A ausência de uma descrição detalhada da vaga impede que o candidato avalie se a oportunidade é adequada ao seu perfil. Solicite informações sobre as responsabilidades do cargo, as qualificações exigidas e os benefícios oferecidos. Uma empresa legítima fornecerá essas informações de forma transparente.",
+      "paragrafoProblematico": null
+    },
+    {
+      "titulo": "Proteja suas informações pessoais.",
+      "explicacao": "Nunca forneça informações pessoais sensíveis, como número de documentos, dados bancários ou senhas, antes de verificar a legitimidade da oferta de emprego. Golpistas podem usar essas informações para roubo de identidade ou outros crimes.",
+      "paragrafoProblematico": null
+    }
+  ],
+  "detalhes_risco": {
+    "tituloSuspeito": 100,
+    "empresaSuspeita": 100,
+    "descricaoVaga": 100,
+    "requisitosVagos": 100,
+    "salarioIrreal": 100,
+    "contatoSuspeito": 0,
+    "plataformaSuspeita": 0,
+    "emailSuspeito": 0,
+    "urlSuspeita": 0
+  },
+  "data_analise": {
+    "$date": "2025-10-29T12:51:40.800Z"
+  },
+  "data_criacao": {
+    "$date": "2025-10-29T12:45:43.702Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6901f29f9d5ff1400baf27ed"
+  },
+  "url_vaga": null,
+  "texto_original": "Vaga: Desenvolvedor Python - Empresa: TechCorp - Salário: R$ 8.000 - Contato: rh@techcorp.com",
+  "tipo_entrada": "TEXTO",
+  "titulo": "Desenvolvedor Python",
+  "empresa": "TechCorp",
+  "descricao": "Vaga para Desenvolvedor Python",
+  "requisitos": "Não especificado",
+  "remuneracao": "R$ 8.000",
+  "localizacao": "Não especificado",
+  "tipo_oportunidade": "EMPREGO",
+  "beneficios": "Não especificado",
+  "contatos": "rh@techcorp.com",
+  "plataforma": "Não especificado",
+  "nivel_risco": "BAIXO",
+  "pontuacao_risco": 10,
+  "alertas": [],
+  "recomendacoes": [
+    "Verificar a reputação da empresa TechCorp.",
+    "Confirmar a existência da empresa através de fontes oficiais.",
+    "Solicitar detalhes sobre os requisitos da vaga.",
+    "Ter cuidado ao fornecer informações pessoais."
+  ],
+  "recomendacoes_detalhadas": [
+    {
+      "titulo": "Verificar reputação da empresa",
+      "explicacao": "É importante verificar a reputação da empresa TechCorp online. Pesquise por avaliações de funcionários, notícias sobre a empresa e outras informações relevantes para garantir sua legitimidade.",
+      "paragrafoProblematico": "TechCorp"
+    },
+    {
+      "titulo": "Confirmar a existência da empresa",
+      "explicacao": "Verifique se a empresa TechCorp está registrada e possui um endereço físico real. Consulte o CNPJ na Receita Federal e procure o endereço no Google Maps para confirmar sua existência.",
+      "paragrafoProblematico": "TechCorp"
+    },
+    {
+      "titulo": "Solicitar detalhes sobre os requisitos da vaga",
+      "explicacao": "A descrição da vaga não especifica os requisitos. Entre em contato com o RH para obter informações detalhadas sobre as habilidades e experiências necessárias para a função de Desenvolvedor Python.",
+      "paragrafoProblematico": "Não especificado"
+    },
+    {
+      "titulo": "Ter cuidado ao fornecer informações pessoais",
+      "explicacao": "Nunca compartilhe informações pessoais sensíveis, como número de documentos ou dados bancários, antes de ter certeza da legitimidade da empresa e da vaga. Esteja atento a pedidos de informações incomuns ou desnecessárias.",
+      "paragrafoProblematico": null
+    }
+  ],
+  "detalhes_risco": {
+    "tituloSuspeito": 0,
+    "empresaSuspeita": 10,
+    "descricaoVaga": 10,
+    "requisitosVagos": 20,
+    "salarioIrreal": 0,
+    "contatoSuspeito": 0,
+    "plataformaSuspeita": 0,
+    "emailSuspeito": 0,
+    "urlSuspeita": 0
+  },
+  "data_analise": {
+    "$date": "2025-10-29T12:55:27.938Z"
+  },
+  "data_criacao": {
+    "$date": "2025-10-29T12:45:43.702Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6901f3a792af520294de1e6f"
+  },
+  "url_vaga": "https://www.emprego.co.mz/en/vaga/gestor-de-cameras-de-seguranca/",
+  "texto_original": null,
+  "tipo_entrada": "LINK",
+  "titulo": "Gestor de Cameras de Segurança",
+  "empresa": "PRI - Precision Recruitment International",
+  "descricao": "Operar e monitorar todos os sistemas/câmeras de segurança de vigilância para lojas de supermercados de forma eficiente e em conformidade com os procedimentos operacionais, legislação e melhores práticas\nRegistar todos os eventos, incidentes e ações realizadas em um formato escrito claro, legível e preciso\nManter um sistema seguro para fornecer dados de acordo com os regulamentos e também para garantir que a segurança da sala de controle e do equipamento seja mantida em todos os momentos e para relatar falhas de equipamentos ao Diretor de Segurança ou Gerenciamento\nEstabelecer a ligação com as agências de segurança e os membros do pessoal para assegurar a utilização adequada do sistema de televisão em circuito fechado e para incluir todos os registos probatórios e declarações de testemunhas de acordo com um nível aceitável para as regras em matéria de provas",
+  "requisitos": "Obrigatório ter pelo menos 5 anos de experiência em um trabalho semelhante\nObrigatório ter experiência profissional fazendo vigilância em supermercados\nExperiência anterior como Operador de Vigilância CCTV\nVigilante e atento aos detalhes\nAbordagem proativa e responsável à segurança\nCapacidade de trabalhar longas horas e manter o foco",
+  "remuneracao": "Não especificado",
+  "localizacao": "Maputo, Moçambique",
+  "tipo_oportunidade": "EMPREGO",
+  "beneficios": "Não especificado",
+  "contatos": "Através da plataforma emprego.co.mz",
+  "plataforma": "emprego.co.mz",
+  "nivel_risco": "BAIXO",
+  "pontuacao_risco": 30,
+  "alertas": [],
+  "recomendacoes": [
+    "Verificar a reputação da empresa.",
+    "Confirmar a existência física da empresa.",
+    "Desconfiar de promessas salariais muito altas não especificadas.",
+    "Cuidado ao fornecer dados pessoais em plataformas de emprego."
+  ],
+  "recomendacoes_detalhadas": [
+    {
+      "titulo": "Verificar reputação da empresa",
+      "explicacao": "É importante verificar a reputação da empresa PRI - Precision Recruitment International, pesquisando online por avaliações de outros funcionários e clientes. Isso ajuda a garantir a legitimidade da empresa e a evitar possíveis fraudes ou exploração.",
+      "paragrafoProblematico": "PRI - Precision Recruitment International"
+    },
+    {
+      "titulo": "Confirmar existência física da empresa",
+      "explicacao": "Confirmar a existência física da empresa, como endereço e número de telefone, através de pesquisa online ou contato direto, ajuda a garantir que a empresa seja real e não uma fachada para atividades ilegais.",
+      "paragrafoProblematico": "PRI - Precision Recruitment International"
+    },
+    {
+      "titulo": "Cuidado com promessas salariais",
+      "explicacao": "Desconfiar de promessas salariais muito altas que não são especificadas na descrição da vaga. Isso pode ser uma tática para atrair candidatos e, posteriormente, aplicar golpes financeiros ou de tráfico humano.",
+      "paragrafoProblematico": "Não especificado"
+    },
+    {
+      "titulo": "Cuidado ao fornecer dados pessoais",
+      "explicacao": "Ter cautela ao fornecer dados pessoais e informações sensíveis em plataformas de emprego, verificando a política de privacidade e segurança da plataforma para garantir que as informações estejam protegidas contra uso indevido ou roubo de identidade.",
+      "paragrafoProblematico": "Usando o seu CV do emprego.co.mz."
+    }
+  ],
+  "detalhes_risco": {
+    "tituloSuspeito": 0,
+    "empresaSuspeita": 20,
+    "descricaoVaga": 10,
+    "requisitosVagos": 0,
+    "salarioIrreal": 20,
+    "contatoSuspeito": 10,
+    "plataformaSuspeita": 0,
+    "emailSuspeito": 0,
+    "urlSuspeita": 0
+  },
+  "data_analise": {
+    "$date": "2025-10-29T12:59:51.508Z"
+  },
+  "data_criacao": {
+    "$date": "2025-10-29T12:58:27.792Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6901f4655eaae3f4b61f6ea5"
+  },
+  "url_vaga": null,
+  "texto_original": "Vaga: Desenvolvedor Python - Empresa: TechCorp - Salário: R$ 8.000 - Contato: rh@techcorp.com",
+  "tipo_entrada": "TEXTO",
+  "titulo": "Desenvolvedor Python",
+  "empresa": "TechCorp",
+  "descricao": "Vaga para Desenvolvedor Python",
+  "requisitos": "Não especificado",
+  "remuneracao": "R$ 8.000",
+  "localizacao": "Não especificado",
+  "tipo_oportunidade": "EMPREGO",
+  "beneficios": "Não especificado",
+  "contatos": "rh@techcorp.com",
+  "plataforma": "Não especificado",
+  "nivel_risco": "BAIXO",
+  "pontuacao_risco": 20,
+  "alertas": [
+    "Informações da vaga incompletas"
+  ],
+  "recomendacoes": [
+    "Pesquise sobre a TechCorp",
+    "Verifique a reputação online",
+    "Confirme o email por outros canais",
+    "Desconfie de promessas exageradas",
+    "Não forneça informações pessoais sensíveis sem verificar",
+    "Esteja atento a pressões para decisões rápidas"
+  ],
+  "recomendacoes_detalhadas": [
+    {
+      "titulo": "Pesquise sobre a TechCorp",
+      "explicacao": "É crucial verificar a existência e legitimidade da empresa. Procure por informações online, CNPJ, endereço físico e reputação. A falta de informações detalhadas sobre a empresa pode ser um indício de fraude.",
+      "paragrafoProblematico": "Empresa: TechCorp"
+    },
+    {
+      "titulo": "Verifique a reputação online",
+      "explicacao": "Pesquise a empresa em sites como Glassdoor, Indeed ou Reclame Aqui para verificar avaliações de funcionários e candidatos. Isso pode revelar informações importantes sobre a cultura da empresa e a veracidade da oferta.",
+      "paragrafoProblematico": null
+    },
+    {
+      "titulo": "Confirme o email por outros canais",
+      "explicacao": "Embora o email pareça profissional, é recomendável entrar em contato com a empresa por outros meios (telefone, LinkedIn) para confirmar se o endereço de email é realmente utilizado pelo RH da TechCorp. Isso ajuda a evitar emails falsos.",
+      "paragrafoProblematico": "Contato: rh@techcorp.com"
+    },
+    {
+      "titulo": "Desconfie de promessas exageradas",
+      "explicacao": "Embora o salário possa ser compatível com a função, é importante avaliar se os requisitos da vaga estão alinhados com essa remuneração. Salários muito altos para funções simples ou com poucos requisitos podem ser sinais de alerta.",
+      "paragrafoProblematico": "Salário: R$ 8.000"
+    },
+    {
+      "titulo": "Não forneça informações pessoais sensíveis sem verificar",
+      "explicacao": "Evite fornecer informações pessoais como número de documentos, endereço completo ou dados bancários antes de confirmar a legitimidade da empresa e da vaga.",
+      "paragrafoProblematico": null
+    },
+    {
+      "titulo": "Esteja atento a pressões para decisões rápidas",
+      "explicacao": "Golpistas frequentemente usam táticas de pressão para forçar a vítima a tomar decisões precipitadas. Desconfie se a empresa exigir uma resposta imediata ou pagamento antecipado.",
+      "paragrafoProblematico": null
+    }
+  ],
+  "detalhes_risco": {
+    "tituloSuspeito": 0,
+    "empresaSuspeita": 30,
+    "descricaoVaga": 20,
+    "requisitosVagos": 60,
+    "salarioIrreal": 0,
+    "contatoSuspeito": 0,
+    "plataformaSuspeita": 0,
+    "emailSuspeito": 0,
+    "urlSuspeita": 0
+  },
+  "data_analise": {
+    "$date": "2025-10-29T13:03:01.521Z"
+  },
+  "data_criacao": {
+    "$date": "2025-10-29T13:02:49.262Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "69020f278c77ebcab170ec8f"
+  },
+  "url_vaga": "https://www.emprego.co.mz/vaga/auditor-de-tecnologia-de-informacao/",
+  "texto_original": null,
+  "tipo_entrada": "LINK",
+  "titulo": "Auditor de Tecnologia de Informação",
+  "empresa": "Empresa anónima",
+  "descricao": "Uma empresa do sector de Sociedades Financeiras com sede em Maputo pretende contratar para o seu quadro de pessoal para Maputo um (1) Auditor de Tecnologia de Informação com limite de idade até aos 40 anos\nFunções\nPlanear, executar e documentar auditorias de sistemas de informação\nAvaliar a eficácia dos controlos internos de TI, incluindo segurança de informação (firewalls, antivírus, controle de acessos, etc.)\nAvaliar a conformidade com normas e regulamentos nacionais e internacionais para o sector de tecnologias de informação e financeiros aplicáveis à função (ex: Basileia II/III, ISO 27001, NIST e outras)\nAnalisar a gestão de riscos de TI, governança de TI e políticas de continuidade de negócios\nEmitir relatórios técnicos e recomendações para mitigação de riscos identificados\nAcompanhar a implementação das recomendações aprovadas\nContribuir para a melhoria contínua dos processos e sistemas de auditoria interna\nPropor o plano anual de auditoria",
+  "requisitos": "Licenciatura em Informática, Engenharia Informática, Auditoria Informática ou área relacionada\nCertificações CISA (Certified Information Systems Auditor) obrigatória e ITIL, COBIT, ISO 27001, ISO 27001 Lead Auditor ou equivalentes\nExperiência Mínima de 5 anos em auditoria informática ou em segurança informática\nConhecimento de auditoria de sistemas bancários, redes, bases de dados e infraestrutura tecnológica\nElevado sentido ético e de confidencialidade\nCapacidade de resolução de problemas\nCapacidade de trabalhar em equipa e sob pressão\nBoa capacidade de comunicação, planeamento e organização",
+  "remuneracao": "Não especificado",
+  "localizacao": "Maputo, Moçambique",
+  "tipo_oportunidade": "EMPREGO",
+  "beneficios": "Não especificado",
+  "contatos": "Através da plataforma emprego.co.mz",
+  "plataforma": "emprego.co.mz",
+  "url_trust_info": {
+    "is_trusted": true,
+    "trust_level": "HIGH",
+    "trust_reason": "Portal de empregos conhecido (mas mantenha cautela - mesmo portais confiáveis podem ter anúncios falsos)",
+    "domain_type": "JOB_PORTAL",
+    "domain": "emprego.co.mz"
+  },
+  "nivel_risco": "MEDIO",
+  "pontuacao_risco": 50,
+  "alertas": [
+    "Empresa anônima: falta de transparência",
+    "Falta de informações sobre a empresa contratante",
+    "Remuneração não especificada: pode ser um atrativo enganoso"
+  ],
+  "recomendacoes": [
+    "Investigar a reputação da empresa.",
+    "Questionar sobre a remuneração e benefícios.",
+    "Verificar a autenticidade da oferta de emprego.",
+    "Desconfiar de vagas sem identificação clara da empresa."
+  ],
+  "recomendacoes_detalhadas": [
+    {
+      "titulo": "Portal de empregos conhecido - mas mantenha cautela",
+      "explicacao": "A oportunidade foi encontrada em Portal de empregos conhecido (mas mantenha cautela - mesmo portais confiáveis podem ter anúncios falsos). Mesmo portais confiáveis podem ter anúncios falsos ou golpes. Sempre verifique a legitimidade da empresa e do anúncio antes de prosseguir.",
+      "paragrafoProblematico": null
+    },
+    {
+      "titulo": "Investigar a empresa anônima",
+      "explicacao": "A falta de identificação da empresa impossibilita a verificação da sua reputação e existência, aumentando o risco de a vaga ser fraudulenta ou parte de um esquema de recrutamento enganoso. É essencial saber para quem se está candidatando.",
+      "paragrafoProblematico": "Empresa anónima"
+    },
+    {
+      "titulo": "Questionar sobre remuneração e benefícios",
+      "explicacao": "A ausência de informações sobre o salário e os benefícios oferecidos pela empresa impede que o candidato avalie se a oferta é justa e adequada às suas expectativas. Isso pode ser uma tática para atrair candidatos e, posteriormente, oferecer condições menos favoráveis.",
+      "paragrafoProblematico": "Não especificado"
+    },
+    {
+      "titulo": "Verificar a autenticidade da oferta",
+      "explicacao": "Antes de fornecer qualquer informação pessoal ou prosseguir com a candidatura, procure confirmar a veracidade da vaga diretamente com a empresa (caso consiga identificá-la). Desconfie de processos seletivos que exigem informações confidenciais logo no início.",
+      "paragrafoProblematico": "Toda a descrição da vaga."
+    },
+    {
+      "titulo": "Usar o bom senso e desconfiar",
+      "explicacao": "Mesmo que a vaga pareça legítima, use o bom senso. Se algo parecer bom demais para ser verdade, ou se sentir pressão para tomar decisões rápidas, pare e reavalie a situação. Consulte outras fontes e busque opiniões antes de seguir adiante.",
+      "paragrafoProblematico": "Não aplicável."
+    }
+  ],
+  "detalhes_risco": {
+    "tituloSuspeito": 0,
+    "empresaSuspeita": 90,
+    "descricaoVaga": 20,
+    "requisitosVagos": 0,
+    "salarioIrreal": 70,
+    "contatoSuspeito": 0,
+    "plataformaSuspeita": 0,
+    "emailSuspeito": 0,
+    "urlSuspeita": 0
+  },
+  "data_analise": {
+    "$date": "2025-10-29T14:57:11.763Z"
+  },
+  "data_criacao": {
+    "$date": "2025-10-29T14:51:26.337Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6902216d8d08cb3d11bad5c7"
+  },
+  "url_vaga": null,
+  "texto_original": "Estamos a contratar para trabalhar numa  casa de câmbio,\n*Caixa\n*Agente de limpeza\n*Contabilísta\nNB: fazemos parte de uma agência de recrutamento. Coisas serias\nNB: DEIXE TEU CONTACTO NO PVT ENTRAREMOS EM CONTACTO.\n\"VAGAS APENAS PARA MULHERES\" COISAS SERIAS",
+  "tipo_entrada": "TEXTO",
+  "titulo": "Vagas em casa de câmbio: Caixa, Agente de limpeza, Contabilista",
+  "empresa": "Agência de recrutamento (não especificada)",
+  "descricao": "Contratação para trabalhar em casa de câmbio nas funções de Caixa, Agente de limpeza e Contabilista.",
+  "requisitos": "Não especificados.",
+  "remuneracao": "Não especificada.",
+  "localizacao": "Não especificada.",
+  "tipo_oportunidade": "EMPREGO",
+  "beneficios": "Não especificados.",
+  "contatos": "Deixar contato no privado (PVT).",
+  "plataforma": "Não especificada.",
+  "url_trust_info": null,
+  "nivel_risco": "ALTO",
+  "pontuacao_risco": 75,
+  "alertas": [
+    "Título da vaga com informações incompletas e pouco claras.",
+    "Empresa genérica, apenas mencionada como 'agência de recrutamento'.",
+    "Descrição da vaga vaga e sem detalhes sobre as responsabilidades.",
+    "Requisitos não especificados.",
+    "Contato apenas por mensagem privada (PVT) é um sinal de alerta.",
+    "A exigência 'VAGAS APENAS PARA MULHERES' pode indicar discriminação ou intenções maliciosas."
+  ],
+  "recomendacoes": [
+    "Desconfie da falta de detalhes sobre a empresa.",
+    "Não forneça informações pessoais em mensagens privadas.",
+    "Verifique a reputação da agência de recrutamento.",
+    "Cuidado com vagas direcionadas a um único gênero.",
+    "Não ignore a falta de requisitos claros."
+  ],
+  "recomendacoes_detalhadas": [
+    {
+      "titulo": "Empresa não identificada",
+      "explicacao": "A empresa se identifica apenas como 'agência de recrutamento' sem fornecer nome, CNPJ ou site oficial. Isso dificulta a verificação da sua legitimidade e pode ser um indício de golpe ou tráfico humano.",
+      "paragrafoProblematico": "fazemos parte de uma agência de recrutamento. Coisas serias"
+    },
+    {
+      "titulo": "Contato por mensagem privada",
+      "explicacao": "Solicitar contato apenas por mensagem privada (PVT) dificulta o rastreamento e a comunicação formal. Empresas legítimas geralmente fornecem canais de contato oficiais, como e-mail corporativo ou telefone fixo. A ausência destes aumenta o risco.",
+      "paragrafoProblematico": "DEIXE TEU CONTACTO NO PVT ENTRAREMOS EM CONTACTO."
+    },
+    {
+      "titulo": "Vaga exclusiva para mulheres",
+      "explicacao": "A restrição de vagas apenas para mulheres é um sinal de alerta, pois pode indicar discriminação de gênero ou, em casos mais graves, estar relacionada a esquemas de exploração sexual ou outras formas de abuso. É crucial investigar a fundo o motivo dessa restrição.",
+      "paragrafoProblematico": "\"VAGAS APENAS PARA MULHERES\""
+    },
+    {
+      "titulo": "Informações vagas da vaga",
+      "explicacao": "A descrição das vagas é extremamente vaga e não oferece detalhes sobre as responsabilidades, habilidades necessárias ou benefícios. Isso é um forte indicador de falta de profissionalismo ou intenções maliciosas.",
+      "paragrafoProblematico": "*Caixa\n*Agente de limpeza\n*Contabilísta"
+    }
+  ],
+  "detalhes_risco": {
+    "tituloSuspeito": 40,
+    "empresaSuspeita": 80,
+    "descricaoVaga": 60,
+    "requisitosVagos": 100,
+    "salarioIrreal": 0,
+    "contatoSuspeito": 90,
+    "plataformaSuspeita": 0,
+    "emailSuspeito": 0,
+    "urlSuspeita": 0
+  },
+  "data_analise": {
+    "$date": "2025-10-29T16:15:09.505Z"
+  },
+  "data_criacao": {
+    "$date": "2025-10-29T15:53:43.840Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6902226d8d08cb3d11bad5c9"
+  },
+  "url_vaga": null,
+  "texto_original": "Estamos a contratar para trabalhar numa  casa de câmbio,\n*Caixa\n*Agente de limpeza\n*Contabilísta\nNB: fazemos parte de uma agência de recrutamento. Coisas serias\nNB: DEIXE TEU CONTACTO NO PVT ENTRAREMOS EM CONTACTO.\n\"VAGAS APENAS PARA MULHERES\" COISAS SERIAS",
+  "tipo_entrada": "TEXTO",
+  "titulo": "Vagas em Casa de Câmbio",
+  "empresa": "Agência de Recrutamento (Nome não especificado)",
+  "descricao": "Contratação para trabalhar em casa de câmbio para as posições de Caixa, Agente de Limpeza e Contabilista.",
+  "requisitos": "Não especificados.",
+  "remuneracao": "Não especificada.",
+  "localizacao": "Não especificada.",
+  "tipo_oportunidade": "EMPREGO",
+  "beneficios": "Não especificados.",
+  "contatos": "Contato via mensagem privada (PVT).",
+  "plataforma": "Não especificada.",
+  "url_trust_info": null,
+  "nivel_risco": "ALTO",
+  "pontuacao_risco": 75,
+  "alertas": [
+    "Título da vaga genérico e pouco informativo.",
+    "Empresa não especificada, apenas referida como 'Agência de Recrutamento'.",
+    "Descrição vaga e incompleta.",
+    "Requisitos não especificados.",
+    "Contato apenas por mensagem privada (PVT) sem informações adicionais.",
+    "Seleção baseada em gênero ('VAGAS APENAS PARA MULHERES').",
+    "Falta de informações sobre a empresa e a vaga."
+  ],
+  "recomendacoes": [
+    "Desconfie da falta de detalhes sobre a empresa.",
+    "Evite vagas com descrições vagas e genéricas.",
+    "Nunca forneça informações pessoais sensíveis sem verificar a autenticidade da oferta.",
+    "Denuncie ofertas de emprego discriminatórias.",
+    "Pesquise sobre a agência de recrutamento antes de fornecer qualquer informação."
+  ],
+  "recomendacoes_detalhadas": [
+    {
+      "titulo": "Verifique a identidade da empresa.",
+      "explicacao": "A empresa se identifica apenas como 'agência de recrutamento' sem fornecer nome, CNPJ ou informações de contato verificáveis. Empresas legítimas fornecem essas informações.",
+      "paragrafoProblematico": "fazemos parte de uma agência de recrutamento. Coisas serias"
+    },
+    {
+      "titulo": "Desconfie da descrição vaga da vaga.",
+      "explicacao": "A descrição da vaga é extremamente vaga, sem detalhar as responsabilidades, requisitos ou benefícios de cada posição. Vagas legítimas fornecem informações detalhadas sobre a função.",
+      "paragrafoProblematico": "*Caixa\n*Agente de limpeza\n*Contabilísta"
+    },
+    {
+      "titulo": "Cuidado com contato via mensagem privada.",
+      "explicacao": "O contato exclusivo por mensagem privada (PVT) é um sinal de alerta, pois dificulta a verificação da autenticidade da oferta e da empresa. Empresas sérias geralmente fornecem canais de comunicação mais formais, como e-mail e telefone.",
+      "paragrafoProblematico": "DEIXE TEU CONTACTO NO PVT ENTRAREMOS EM CONTACTO."
+    },
+    {
+      "titulo": "Desconfie de anúncios discriminatórios.",
+      "explicacao": "Anúncios de emprego que restringem a candidatura com base em gênero são discriminatórios e ilegais. Isso levanta suspeitas sobre a legitimidade da oferta.",
+      "paragrafoProblematico": "\"VAGAS APENAS PARA MULHERES\""
+    }
+  ],
+  "detalhes_risco": {
+    "tituloSuspeito": 50,
+    "empresaSuspeita": 90,
+    "descricaoVaga": 80,
+    "requisitosVagos": 100,
+    "salarioIrreal": 50,
+    "contatoSuspeito": 80,
+    "plataformaSuspeita": 0,
+    "emailSuspeito": 0,
+    "urlSuspeita": 0
+  },
+  "data_analise": {
+    "$date": "2025-10-29T16:19:25.108Z"
+  },
+  "data_criacao": {
+    "$date": "2025-10-29T15:53:43.840Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "690239889b704d2da0107f52"
+  },
+  "url_vaga": "https://empregos-suspeitos-fake.com/vaga/desenvolvedor-senior",
+  "texto_original": null,
+  "tipo_entrada": "LINK",
+  "titulo": null,
+  "empresa": null,
+  "descricao": null,
+  "requisitos": null,
+  "remuneracao": null,
+  "localizacao": null,
+  "tipo_oportunidade": null,
+  "beneficios": null,
+  "contatos": null,
+  "plataforma": null,
+  "url_trust_info": {
+    "is_trusted": false,
+    "trust_level": "LOW",
+    "trust_reason": "URL não reconhecida como confiável",
+    "domain_type": "UNKNOWN"
+  },
+  "nivel_risco": "MEDIO",
+  "pontuacao_risco": 50,
+  "alertas": [
+    "Erro na análise: 429 Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details."
+  ],
+  "recomendacoes": [
+    "Pesquise a empresa antes de prosseguir",
+    "Verifique a identidade do contato",
+    "Nunca forneça informações sensíveis prematuramente",
+    "Mantenha-se informado sobre golpes",
+    "Verifique manualmente a oportunidade"
+  ],
+  "recomendacoes_detalhadas": [
+    {
+      "titulo": "Pesquise a empresa antes de prosseguir",
+      "explicacao": "Mesmo que a oportunidade pareça legítima, é sempre recomendável pesquisar informações sobre a empresa em sites oficiais, redes sociais e plataformas de avaliação profissional antes de se candidatar.",
+      "paragrafoProblematico": null
+    },
+    {
+      "titulo": "Verifique a identidade do contato",
+      "explicacao": "Confirme que o contato fornecido realmente pertence à empresa anunciada. Prefira comunicação através de canais oficiais da empresa quando possível.",
+      "paragrafoProblematico": null
+    },
+    {
+      "titulo": "Nunca forneça informações sensíveis prematuramente",
+      "explicacao": "Empresas legítimas não solicitam informações bancárias, senhas ou documentos pessoais antes de uma entrevista formal ou processo de seleção estabelecido.",
+      "paragrafoProblematico": null
+    },
+    {
+      "titulo": "Mantenha-se informado sobre golpes",
+      "explicacao": "Fique atento a sinais comuns de golpes como promessas de ganhos fáceis, pressão para decisão rápida ou solicitação de pagamento antecipado.",
+      "paragrafoProblematico": null
+    },
+    {
+      "titulo": "Verifique manualmente a oportunidade",
+      "explicacao": "Ocorreu um erro durante a análise automática (429 Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details.). Por favor, revise cuidadosamente a oportunidade antes de tomar qualquer decisão e considere consultar autoridades competentes se identificar sinais suspeitos.",
+      "paragrafoProblematico": null
+    }
+  ],
+  "detalhes_risco": {
+    "tituloSuspeito": 0,
+    "empresaSuspeita": 0,
+    "descricaoVaga": 0,
+    "requisitosVagos": 0,
+    "salarioIrreal": 0,
+    "contatoSuspeito": 0,
+    "plataformaSuspeita": 0,
+    "emailSuspeito": 0,
+    "urlSuspeita": 0
+  },
+  "data_analise": {
+    "$date": "2025-10-29T17:58:00.141Z"
+  },
+  "data_criacao": {
+    "$date": "2025-10-29T17:55:27.833Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "690239d39b704d2da0107f54"
+  },
+  "url_vaga": "https://ganhos-rapidos-online.net/vaga/trabalho-remoto",
+  "texto_original": null,
+  "tipo_entrada": "LINK",
+  "titulo": "Erro ao carregar",
+  "empresa": null,
+  "descricao": "Erro ao acessar URL: HTTPSConnectionPool(host='ganhos-rapidos-online.net', port=443): Max retries exceeded with url: /vaga/trabalho-remoto (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x776ed47519a0>: Failed to resolve 'ganhos-rapidos-online.net' ([Errno -2] Name or service not known)\"))",
+  "requisitos": null,
+  "remuneracao": null,
+  "localizacao": null,
+  "tipo_oportunidade": "EMPREGO",
+  "beneficios": null,
+  "contatos": null,
+  "plataforma": "Site Desconhecido",
+  "url_trust_info": {
+    "is_trusted": false,
+    "trust_level": "LOW",
+    "trust_reason": "URL não reconhecida como confiável",
+    "domain_type": "UNKNOWN"
+  },
+  "nivel_risco": "CRITICO",
+  "pontuacao_risco": 95,
+  "alertas": [
+    "Título indica erro ao carregar, sugerindo problema com a vaga ou o site.",
+    "A descrição menciona 'ganhos-rapidos-online.net' e 'trabalho-remoto', o que pode indicar um golpe.",
+    "A URL 'ganhos-rapidos-online.net' não pôde ser resolvida, indicando um site potencialmente malicioso ou inexistente.",
+    "A falta de detalhes sobre a empresa e a vaga aumentam o risco de fraude."
+  ],
+  "recomendacoes": [
+    "Não acessar o site 'ganhos-rapidos-online.net'.",
+    "Desconfiar de promessas de ganhos rápidos online.",
+    "Verificar a reputação de empresas que oferecem trabalho remoto.",
+    "Procurar vagas em plataformas de emprego confiáveis.",
+    "Reportar a vaga suspeita às autoridades competentes."
+  ],
+  "recomendacoes_detalhadas": [
+    {
+      "titulo": "Evitar acesso ao site",
+      "explicacao": "A tentativa de acesso à URL falhou com um erro de resolução de nome, indicando que o site 'ganhos-rapidos-online.net' pode não existir, ser malicioso ou estar indisponível. É perigoso tentar acessá-lo, pois pode conter malware ou ser usado para phishing.",
+      "paragrafoProblematico": "Erro ao acessar URL: HTTPSConnectionPool(host='ganhos-rapidos-online.net', port=443): Max retries exceeded with url: /vaga/trabalho-remoto"
+    },
+    {
+      "titulo": "Desconfiar de 'ganhos rápidos'",
+      "explicacao": "O nome do domínio 'ganhos-rapidos-online.net' já é um sinal de alerta. Golpes frequentemente usam promessas de ganhos fáceis e rápidos para atrair vítimas. É crucial ser cético em relação a essas ofertas.",
+      "paragrafoProblematico": "Erro ao acessar URL: HTTPSConnectionPool(host='ganhos-rapidos-online.net', port=443): Max retries exceeded with url: /vaga/trabalho-remoto"
+    },
+    {
+      "titulo": "Verificar reputação da empresa",
+      "explicacao": "Como não há informações claras sobre a empresa, é impossível verificar sua legitimidade. Antes de se candidatar a qualquer vaga, especialmente online, é essencial pesquisar a empresa em sites de avaliação e verificar se há reclamações ou relatos de fraude.",
+      "paragrafoProblematico": null
+    },
+    {
+      "titulo": "Usar plataformas de emprego seguras",
+      "explicacao": "É mais seguro procurar oportunidades de emprego em plataformas de emprego bem conhecidas e confiáveis, que geralmente têm medidas de segurança para proteger os candidatos de fraudes. Evite clicar em links de vagas encontrados em fontes duvidosas.",
+      "paragrafoProblematico": null
+    }
+  ],
+  "detalhes_risco": {
+    "tituloSuspeito": 30,
+    "empresaSuspeita": 100,
+    "descricaoVaga": 85,
+    "requisitosVagos": 100,
+    "salarioIrreal": 100,
+    "contatoSuspeito": 100,
+    "plataformaSuspeita": 100,
+    "emailSuspeito": 100,
+    "urlSuspeita": 100
+  },
+  "data_analise": {
+    "$date": "2025-10-29T17:59:15.134Z"
+  },
+  "data_criacao": {
+    "$date": "2025-10-29T17:55:27.833Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6902477d1a6b9e335384757a"
+  },
+  "url_vaga": "https://www.emprego.co.mz/vaga/coordenador-de-programas-de-formacao-de-pos-graduacao-e-tecnico-cientifica-para-investigadores/",
+  "texto_original": null,
+  "tipo_entrada": "LINK",
+  "titulo": "Coordenador de Programas de Formação de Pós-Graduação e Técnico-Científica para Investigadores",
+  "empresa": "CISM - Centro de Investigação em Saúde de Manhiça",
+  "descricao": "O CISM está a recrutar um Coordenador de Programas de Formação de Pós-Graduação e Técnico-Científica para Investigadores, para Manhiça, em Moçambique. Descrição: Objectivos: A Fundação Manhiça/Centro de Investigação em Saúde de Manhiça (CISM), com Sede na Manhiça, Província de Maputo, torna público que pretende recrutar um (01) Coordenador de Programas de Formação de Pós-Graduação e Técnico-Científica para Investigadores, para liderar as actividades de formação, alinhadas às prioridades estratégicas institucionais e científicas com resultados esperados abaixo:\nImplementação dos aspectos técnicos das actividades de formação seguindo as directrizes do plano estratégico de formação e o Comité de Formação\nCapacitação de formandos: Calendarização e implementação dos programas de formação de investigadores com a finalidade de obtenção de competências técnicas e de aprimoramento de competências adquiridas\nIdentificação de oportunidades de financiamento: Divulgação e actualização da lista de programas de bolsas e de financiamentos formativos disponíveis para investigadores do CISM\nAplicação a projectos formativos competitivos\nParcerias e acordos: Materialização das actividades preconizadas nos convénios e memorandos assinados com universidades e instituições de renome para acolher os formandos do CISM\nFunções\nParticipar nas reuniões do Comité de Formação e outros comités relevantes e garantir a implementação das decisões tomadas\nApoiar o Assessor de formação no processo de desenvolvimento de políticas de formação assegurando alinhamento aos melhores padrões internacionais\nImplementar as estratégias e os planos de actividades da Unidade de formação voltadas exclusivamente aos investigadores do CISM\nGarantir que os processos de supervisão e mentoria dos investigadores sejam adequados e sigam as melhores práticas\nIdentificar e organizar cursos técnicos estratégicos de curta duração para capacitação dos investigadores\nAvaliar os curricula e programas formativos das universidades, recomendando as melhores opções para a formação pós-graduada aos investigadores\nIdentificar oportunidades de financiamento para actividades de formação e aplicar a convocatórias públicas\nReportar de forma periódica ao Assessor de Formação sobre as actividades em curso na unidade de Formação\nImplementar as actividades de formação dos investigadores em colaboração com áreas de pesquisa e departamentos do CISM, sempre em alinhamento com as prioridades científicas e formativas do centro\nConsolidar todas as acções formativas em planos estratégicos e operacionais únicos, alinhados às necessidades institucionais\nApoiar na monitoria e avaliação das actividades de formação\nGarantir a integração das formações especificas de projecto no contexto da estratégia global de formação do CISM\nRedigir, actualizar e implementar políticas e procedimentos ligados à área de formação\nAssegurar que todas as actividades formativas estejam em conformidade com as normas e padrões institucionais e internacionais\nGarantir a existência de procedimentos eficazes para a monitoria e avaliação dos programas de formação\nSupervisionar e apoiar o processo de candidatura de investigadores a programas de pós-graduação, garantindo alinhamento com os objectivos institucionais\nAvaliar e recomendar aos candidatos sobre os programas de pós-graduação de universidades nacionais e internacionais que atendam às necessidades formativas dos investigadores\nAssegurar a implementação das actividades definidas no âmbito das parcerias estratégicas com universidades e instituições de ensino superior para garantir o acesso a programas de alta qualidade\nMonitorar e acompanhar o progresso dos investigadores inscritos em programas de pós-graduação, oferecendo suporte sempre que necessário\nAssegurar a actualização constante sobre os requisitos e currículos das universidades parceiras, de forma a optimizar a formação dos investigadores e outras funções referentes ao cargo\nApoiar a gestão do programa de mentores para investigadores juniores\nPromover acções formativas em competências científicas, tecnológicas e de gestão de projectos de pesquisa\nGarantir a existência de planos e orçamentos detalhados para todas as actividades de formação de investigadores\nEstabelecer parcerias estratégicas com universidades nacionais e internacionais para implementação de programas de formação\nRepresentar a CISM em fóruns nacionais e internacionais sobre formação de investigadores e reforço de capacidades\nElaborar e apresentar relatórios periódicos sobre as actividades de formação realizadas, destacando os seus impactos e resultados",
+  "requisitos": "No mínimo grau de mestrado em Educação ou áreas afins a pesquisa em saúde (Ciências da Saúde, Ciências da Vida, Ciências Sociais)\nExperiência consolidada na área académica, metodologias pedagógicas e gestão de programas de formação de pós-graduação e científica\nExperiência comprovada em identificação de oportunidades de financiamento e negociação de parcerias institucionais\nConhecimento profundo de redes académicas e científicas nacionais e internacionais\nCapacidade de liderança e trabalho em equipas multidisciplinares\nMínimo de 5 anos de experiência em gestão de programas de formação científica e técnica, com foco em investigadores\nExperiência comprovada na organização de cursos técnicos de curta duração e na avaliação de curricula de programas académicos\nConhecimento sólido em desenvolvimento e implementação de políticas de formação assim como programas específicos de formação\nExcelentes capacidades de liderança, comunicação e negociação\nExperiência em planeamento estratégico e gestão orçamental\nHabilidade em estabelecer e manter parcerias estratégicas\nDomínio de português e inglês, oral e escrito\nCapacidade de desenvolver e implementar actividades formativas para audiência diversificada em temáticas científicas, técnicas e transversais\nCompetências em metodologia pedagógica para conceber actividades formativas diversificada para responder as necessidades dos investigadores",
+  "remuneracao": "Não especificado",
+  "localizacao": "Manhiça, Moçambique",
+  "tipo_oportunidade": "EMPREGO",
+  "beneficios": "Não especificado",
+  "contatos": "recrutamento@manhica.net ou rrhh@manhica.net",
+  "plataforma": "emprego.co.mz",
+  "url_trust_info": {
+    "is_trusted": true,
+    "trust_level": "HIGH",
+    "trust_reason": "Portal de empregos conhecido (mas mantenha cautela - mesmo portais confiáveis podem ter anúncios falsos)",
+    "domain_type": "JOB_PORTAL",
+    "domain": "emprego.co.mz"
+  },
+  "nivel_risco": "BAIXO",
+  "pontuacao_risco": 15,
+  "alertas": [],
+  "recomendacoes": [
+    "Verifique a reputação da empresa.",
+    "Confirme a existência da empresa.",
+    "Proteja seus dados pessoais."
+  ],
+  "recomendacoes_detalhadas": [
+    {
+      "titulo": "Portal de empregos conhecido - mas mantenha cautela",
+      "explicacao": "A oportunidade foi encontrada em Portal de empregos conhecido (mas mantenha cautela - mesmo portais confiáveis podem ter anúncios falsos). Mesmo portais confiáveis podem ter anúncios falsos ou golpes. Sempre verifique a legitimidade da empresa e do anúncio antes de prosseguir.",
+      "paragrafoProblematico": null
+    },
+    {
+      "titulo": "Verifique a reputação da empresa CISM",
+      "explicacao": "Embora a vaga pareça legítima, é sempre prudente pesquisar sobre o CISM - Centro de Investigação em Saúde de Manhiça. Procure avaliações de funcionários, notícias sobre a empresa e informações sobre seus projetos. Isso ajuda a confirmar a legitimidade da organização e a entender melhor o ambiente de trabalho.",
+      "paragrafoProblematico": "CISM - Centro de Investigação em Saúde de Manhiça"
+    },
+    {
+      "titulo": "Confirme a existência física do CISM",
+      "explicacao": "Verifique se o CISM possui um endereço físico em Manhiça, Moçambique, e se possível, procure confirmação de sua existência através de fontes locais ou associações profissionais. A existência física e a reputação local são indicadores importantes de legitimidade.",
+      "paragrafoProblematico": "O CISM está a recrutar um Coordenador de Programas de Formação de Pós-Graduação e Técnico-Científica para Investigadores, para Manhiça, em Moçambique."
+    },
+    {
+      "titulo": "Proteja seus dados pessoais durante a candidatura",
+      "explicacao": "Ao enviar seu currículo e informações pessoais, certifique-se de que está utilizando canais de comunicação seguros e que a empresa possui políticas de privacidade claras. Evite fornecer informações excessivamente detalhadas logo no primeiro contato e esteja atento a possíveis pedidos de informações sensíveis.",
+      "paragrafoProblematico": "O CV deve estar devidamente detalhado no que diz respeito as qualificações académicas, profissionais, incluindo informações de residência que sejam verdadeiras e actuais"
+    }
+  ],
+  "detalhes_risco": {
+    "tituloSuspeito": 0,
+    "empresaSuspeita": 10,
+    "descricaoVaga": 15,
+    "requisitosVagos": 10,
+    "salarioIrreal": 0,
+    "contatoSuspeito": 15,
+    "plataformaSuspeita": 20,
+    "emailSuspeito": 0,
+    "urlSuspeita": 0
+  },
+  "data_analise": {
+    "$date": "2025-10-29T18:57:33.726Z"
+  },
+  "data_criacao": {
+    "$date": "2025-10-29T18:28:04.362Z"
+  }
+}]

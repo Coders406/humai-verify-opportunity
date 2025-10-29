@@ -43,7 +43,8 @@ export default function LoginPage() {
       
       // Garantir que instituicaoId seja maiúsculo
       const loginData = {
-        ...data,
+        email: data.email,
+        senha: data.senha,
         instituicaoId: data.instituicaoId.toUpperCase()
       };
       

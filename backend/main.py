@@ -75,7 +75,7 @@ app = FastAPI(title="HumAI Verify Opportunity API", version="1.0.0")
 # CORS middleware - deve ser adicionado ANTES de definir rotas
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000", "http://localhost:3002"],
+    allow_origins=["http://localhost:5173", "http://localhost:3000", "http://localhost:3002", "http://localhost:3001"],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
@@ -464,8 +464,7 @@ CRITÉRIOS DE ANÁLISE:
 8. Falta de informações sobre a empresa
 9. Pressão para decisão rápida
 10. Solicitação de dinheiro antecipado
-11. Email suspeito (Gmail, Yahoo, Hotmail para empresas sérias)
-12. URL suspeita (domínios não confiáveis, encurtadores, sites genéricos)
+11. URL suspeita (domínios não confiáveis, encurtadores, sites genéricos)
 
 Para cada recomendação, forneça:
 - Um título curto e direto (máximo 80 caracteres)
@@ -508,7 +507,6 @@ Retorne APENAS um JSON com a seguinte estrutura:
             "salarioIrreal": 0-100,
             "contatoSuspeito": 0-100,
             "plataformaSuspeita": 0-100,
-            "emailSuspeito": 0-100,
             "urlSuspeita": 0-100
         },
         "textosSuspeitos": {
@@ -519,7 +517,6 @@ Retorne APENAS um JSON com a seguinte estrutura:
             "salarioIrreal": "Texto específico sobre salário que é suspeito (se houver)",
             "contatoSuspeito": "Texto específico do contato que é suspeito (se houver)",
             "plataformaSuspeita": "Texto específico da plataforma que é suspeito (se houver)",
-            "emailSuspeito": "Email específico que é suspeito (se houver)",
             "urlSuspeita": "URL específica que é suspeita (se houver)"
         },
         "explicacoesDetalhes": {
@@ -530,7 +527,6 @@ Retorne APENAS um JSON com a seguinte estrutura:
             "salarioIrreal": "Explicação do motivo pelo qual o salário é irreal quando percentual >= 31% (baseado nas informações extraídas da vaga)",
             "contatoSuspeito": "Explicação do motivo pelo qual o contato é suspeito quando percentual >= 31% (baseado nas informações extraídas da vaga)",
             "plataformaSuspeita": "Explicação do motivo pelo qual a plataforma é suspeita quando percentual >= 31% (baseado nas informações extraídas da vaga)",
-            "emailSuspeito": "Explicação do motivo pelo qual o email é suspeito quando percentual >= 31% (baseado nas informações extraídas da vaga)",
             "urlSuspeita": "Explicação do motivo pelo qual a URL é suspeita quando percentual >= 31% (baseado nas informações extraídas da vaga)"
         }
     }
@@ -596,7 +592,6 @@ Retorne APENAS um JSON com a seguinte estrutura:
                     "salarioIrreal": 0,
                     "contatoSuspeito": 0,
                     "plataformaSuspeita": 0,
-                    "emailSuspeito": 0,
                     "urlSuspeita": 0
                 }),
                 textosSuspeitos={k: v for k, v in analise.get('textosSuspeitos', {}).items() if v is not None},
@@ -626,7 +621,6 @@ Retorne APENAS um JSON com a seguinte estrutura:
                     "salarioIrreal": 0,
                     "contatoSuspeito": 0,
                     "plataformaSuspeita": 0,
-                    "emailSuspeito": 0,
                     "urlSuspeita": 0
                 },
                 textosSuspeitos={},
@@ -660,7 +654,6 @@ Retorne APENAS um JSON com a seguinte estrutura:
                 "salarioIrreal": 0,
                 "contatoSuspeito": 0,
                 "plataformaSuspeita": 0,
-                "emailSuspeito": 0,
                 "urlSuspeita": 0
             },
             textosSuspeitos={},

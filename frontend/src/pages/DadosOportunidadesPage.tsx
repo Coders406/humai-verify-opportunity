@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+
+const API_URL = (import.meta as any).env.VITE_API_URL || 'http://localhost:8000';
 import { 
   Database, 
   Search, 
@@ -14,9 +16,9 @@ import {
   FileText,
   ChevronDown,
   ChevronUp,
-  Eye,
-  Trash2,
-  ArrowLeft,
+  // Eye,
+  // Trash2,
+  // ArrowLeft,
   X,
   Info,
   ExternalLink,
@@ -83,7 +85,7 @@ const DadosOportunidadesPage: React.FC = () => {
 
   const fetchEstatisticas = async () => {
     try {
-      const response = await fetch('http://localhost:8000/vagas/stats');
+      const response = await fetch(`${API_URL}/vagas/stats`);
       if (response.ok) {
         const data: EstatisticasResponse = await response.json();
         setEstatisticas(data);
@@ -95,7 +97,7 @@ const DadosOportunidadesPage: React.FC = () => {
 
   const fetchTopEmpresas = async () => {
     try {
-      const response = await fetch('http://localhost:8000/vagas/top-empresas-risco');
+      const response = await fetch(`${API_URL}/vagas/top-empresas-risco`);
       if (response.ok) {
         const data: TopEmpresasResponse = await response.json();
         setTopEmpresas(data.empresas);
@@ -107,7 +109,7 @@ const DadosOportunidadesPage: React.FC = () => {
 
   const fetchTopDominios = async () => {
     try {
-      const response = await fetch('http://localhost:8000/vagas/top-dominios-risco');
+      const response = await fetch(`${API_URL}/vagas/top-dominios-risco`);
       if (response.ok) {
         const data: TopDominiosResponse = await response.json();
         setTopDominios(data.dominios);
@@ -123,7 +125,7 @@ const DadosOportunidadesPage: React.FC = () => {
       
       // Se há filtro ativo, buscar todas as vagas filtradas sem paginação
       if (filterRisco !== 'TODOS') {
-        const response = await fetch(`http://localhost:8000/vagas?nivel_risco=${filterRisco}`);
+        const response = await fetch(`${API_URL}/vagas?nivel_risco=${filterRisco}`);
         
         if (!response.ok) {
           throw new Error('Erro ao carregar dados');
@@ -136,7 +138,7 @@ const DadosOportunidadesPage: React.FC = () => {
       } else {
         // Sem filtro, usar paginação normal
         const skip = (page - 1) * itemsPerPage;
-        const response = await fetch(`http://localhost:8000/vagas?limit=${itemsPerPage}&skip=${skip}`);
+        const response = await fetch(`${API_URL}/vagas?limit=${itemsPerPage}&skip=${skip}`);
         
         if (!response.ok) {
           throw new Error('Erro ao carregar dados');
