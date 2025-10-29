@@ -625,37 +625,12 @@ export default function VerificarOportunidadePage() {
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
                         Link da Oportunidade *
                       </label>
-                      <div className="flex gap-2">
-                        <input
-                          {...register('linkOportunidade')}
-                          type="url"
-                          className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-unodc-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white"
-                          placeholder="https://linkedin.com/jobs/view/123456"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const link = watch('linkOportunidade');
-                            if (link) {
-                              extrairDadosAutomaticamente(link);
-                            }
-                          }}
-                          disabled={isExtracting || !watch('linkOportunidade')}
-                          className="px-6 py-3 bg-gradient-to-r from-unodc-blue-600 to-unodc-navy-600 hover:from-unodc-blue-700 hover:to-unodc-navy-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                        >
-                          {isExtracting ? (
-                            <div className="flex items-center">
-                              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                              <span>Extraindo...</span>
-                            </div>
-                          ) : (
-                            <div className="flex items-center">
-                              <Wand2 className="h-4 w-4 mr-2" />
-                              <span>Analisar</span>
-                            </div>
-                          )}
-                        </button>
-                      </div>
+                      <input
+                        {...register('linkOportunidade')}
+                        type="url"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-unodc-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white"
+                        placeholder="https://linkedin.com/jobs/view/123456"
+                      />
                       {errors.linkOportunidade && (
                         <p className="mt-2 text-sm text-red-600 flex items-center">
                           <AlertCircle className="w-4 h-4 mr-1" />
@@ -695,30 +670,6 @@ Descrição: Buscamos desenvolvedor Python com experiência..."
                         <div className="flex gap-2">
                           <button
                             type="button"
-                            onClick={() => {
-                              const texto = watch('textoPublicacao');
-                              if (texto) {
-                                extrairDadosAutomaticamente(undefined, texto);
-                              }
-                            }}
-                            disabled={isExtracting || !watch('textoPublicacao')}
-                            className="flex-1 px-6 py-3 bg-gradient-to-r from-unodc-blue-600 to-unodc-navy-600 hover:from-unodc-blue-700 hover:to-unodc-navy-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                          >
-                            {isExtracting ? (
-                              <div className="flex items-center justify-center">
-                                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                                <span>Analisando Texto...</span>
-                              </div>
-                            ) : (
-                              <div className="flex items-center justify-center">
-                                <Wand2 className="h-4 w-4 mr-2" />
-                                <span>Analisar Texto</span>
-                              </div>
-                            )}
-                          </button>
-                          
-                          <button
-                            type="button"
                             onClick={() => setValue('textoPublicacao', '')}
                             disabled={!watch('textoPublicacao')}
                             className="px-4 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -744,19 +695,20 @@ Descrição: Buscamos desenvolvedor Python com experiência..."
                     </div>
                     <div className="ml-3">
                       <h4 className="text-sm font-medium text-blue-800">
-                        {watchedTipoEntrada === 'LINK' ? 'Extração Automática' : 'Análise de Texto'}
+                        {watchedTipoEntrada === 'LINK' ? 'Extração e Análise Automática' : 'Análise de Texto'}
                       </h4>
                       <p className="text-sm text-blue-700 mt-1">
                         {watchedTipoEntrada === 'LINK' 
-                          ? 'O sistema irá extrair automaticamente informações como título, empresa, descrição, requisitos e contatos da oportunidade fornecida.'
+                          ? 'O sistema irá extrair automaticamente informações da oportunidade e analisar todos os elementos para detectar sinais de golpe ou tráfico humano.'
                           : 'Cole o texto completo da publicação (post, anúncio, email, etc.) e o sistema analisará automaticamente todos os elementos para detectar sinais de golpe ou tráfico humano.'
                         }
                       </p>
-                      {watchedTipoEntrada === 'TEXTO' && (
-                        <div className="mt-2 text-xs text-blue-600">
-                          <strong>Dica:</strong> Quanto mais completo for o texto, mais precisa será a análise. Inclua informações sobre empresa, salário, contato e descrição da vaga.
-                        </div>
-                      )}
+                      <div className="mt-2 text-xs text-blue-600">
+                        <strong>Dica:</strong> {watchedTipoEntrada === 'TEXTO' 
+                          ? 'Quanto mais completo for o texto, mais precisa será a análise. Inclua informações sobre empresa, salário, contato e descrição da vaga.'
+                          : 'Use o botão "Analisar Risco da Oportunidade" abaixo para iniciar a análise completa.'
+                        }
+                      </div>
                     </div>
                   </div>
                 </div>
