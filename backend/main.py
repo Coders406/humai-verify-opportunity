@@ -715,25 +715,68 @@ async def analyze_opportunity(request: AnalysisRequest):
         raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
 
 @app.get("/vagas")
-async def listar_vagas(limit: int = 10, skip: int = 0):
+async def listar_vagas(limit: int = 10, skip: int = 0, nivel_risco: Optional[str] = None):
     """Lista vagas analisadas"""
     try:
-        cursor = vagas_collection.find().skip(skip).limit(limit).sort("data_analise", -1)
-        vagas = []
-        async for vaga in cursor:
-            vaga["_id"] = str(vaga["_id"])
-            vagas.append(vaga)
+        # Construir filtro
+        filtro = {}
+        if nivel_risco and nivel_risco != "TODOS":
+            filtro["nivel_risco"] = nivel_risco
         
-        total = await vagas_collection.count_documents({})
-        
-        return {
-            "vagas": vagas,
-            "total": total,
-            "limit": limit,
-            "skip": skip
-        }
+        # Se há filtro, retornar todas as vagas filtradas sem paginação
+        if filtro:
+            cursor = vagas_collection.find(filtro).sort("data_analise", -1)
+            vagas = []
+            async for vaga in cursor:
+                vaga["_id"] = str(vaga["_id"])
+                vagas.append(vaga)
+            
+            total = len(vagas)
+            
+            return {
+                "vagas": vagas,
+                "total": total,
+                "limit": total,
+                "skip": 0
+            }
+        else:
+            # Sem filtro, usar paginação normal
+            cursor = vagas_collection.find().skip(skip).limit(limit).sort("data_analise", -1)
+            vagas = []
+            async for vaga in cursor:
+                vaga["_id"] = str(vaga["_id"])
+                vagas.append(vaga)
+            
+            total = await vagas_collection.count_documents({})
+            
+            return {
+                "vagas": vagas,
+                "total": total,
+                "limit": limit,
+                "skip": skip
+            }
     except Exception as e:
         print(f"Erro ao listar vagas: {e}")
+        raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
+
+@app.get("/vagas/stats")
+async def obter_estatisticas():
+    """Obtém estatísticas gerais das vagas"""
+    try:
+        # Contar total de vagas
+        total_vagas = await vagas_collection.count_documents({})
+        
+        # Contar alto risco (ALTO + CRITICO)
+        alto_risco = await vagas_collection.count_documents({
+            "nivel_risco": {"$in": ["ALTO", "CRITICO"]}
+        })
+        
+        return {
+            "total_vagas": total_vagas,
+            "alto_risco": alto_risco
+        }
+    except Exception as e:
+        print(f"Erro ao obter estatísticas: {e}")
         raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
 
 @app.get("/vagas/{vaga_id}")
