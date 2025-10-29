@@ -1,16 +1,19 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from pydantic import BaseModel, EmailStr
 from typing import Optional, Dict, Any
 import os
 import json
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 from dotenv import load_dotenv
 import google.generativeai as genai
 import requests
 from bs4 import BeautifulSoup
 from motor.motor_asyncio import AsyncIOMotorClient
+from passlib.context import CryptContext
+from jose import JWTError, jwt
 
 # Configuração inicial
 load_dotenv()
@@ -56,6 +59,16 @@ model = genai.GenerativeModel('gemini-2.0-flash')
 client = AsyncIOMotorClient(mongodb_url)
 db = client.humai_verify
 vagas_collection = db.vagas
+usuarios_collection = db.usuarios
+instituicoes_collection = db.instituicoes
+
+# Configuração de segurança
+SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-change-in-production")
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 24 horas
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 
 app = FastAPI(title="HumAI Verify Opportunity API", version="1.0.0")
 
@@ -226,6 +239,75 @@ def get_url_trust_info(url: str) -> Dict[str, Any]:
             'trust_reason': 'URL não reconhecida como confiável',
             'domain_type': 'UNKNOWN'
         }
+
+# Modelos de Autenticação
+class LoginRequest(BaseModel):
+    email: str
+    senha: str
+    instituicaoId: str
+
+class UserResponse(BaseModel):
+    id: str
+    nome: str
+    email: str
+    perfil: str
+    instituicaoId: str
+    instituicaoNome: Optional[str] = None
+    ativo: bool
+
+class LoginResponse(BaseModel):
+    user: UserResponse
+    token: str
+
+# Funções de autenticação
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    return pwd_context.verify(plain_password, hashed_password)
+
+def get_password_hash(password: str) -> str:
+    return pwd_context.hash(password)
+
+def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+async def get_user_by_email(email: str):
+    user = await usuarios_collection.find_one({"email": email})
+    return user
+
+async def authenticate_user(email: str, senha: str, codigo_instituicao: str):
+    from bson import ObjectId
+    user = await get_user_by_email(email)
+    if not user:
+        return False
+    
+    if not verify_password(senha, user.get("senha", "")):
+        return False
+    
+    # Verificar código da instituição
+    instituicao_id = user.get("instituicaoId")
+    if isinstance(instituicao_id, str):
+        instituicao_id = ObjectId(instituicao_id)
+    
+    instituicao = await instituicoes_collection.find_one({"_id": instituicao_id})
+    if not instituicao:
+        return False
+    
+    codigo_instituicao_upper = codigo_instituicao.upper()
+    codigo_db = instituicao.get("codigoAcesso", "").upper()
+    
+    if codigo_instituicao_upper != codigo_db:
+        return False
+    
+    if not user.get("ativo", False):
+        return False
+    
+    return user
 
 class AnalysisRequest(BaseModel):
     tipoEntrada: str
@@ -598,6 +680,67 @@ async def salvar_vaga_no_banco(vaga_data: dict) -> str:
 @app.get("/")
 async def root():
     return {"message": "HumAI Verify Opportunity API"}
+
+@app.post("/auth/login", response_model=LoginResponse)
+async def login(request: LoginRequest):
+    """Endpoint de autenticação"""
+    try:
+        user = await authenticate_user(
+            request.email, 
+            request.senha, 
+            request.instituicaoId
+        )
+        
+        if not user:
+            raise HTTPException(
+                status_code=401,
+                detail="Credenciais inválidas. Verifique seu email, senha e código da instituição."
+            )
+        
+        # Buscar informações da instituição
+        from bson import ObjectId
+        instituicao_id = user.get("instituicaoId")
+        if isinstance(instituicao_id, str):
+            instituicao_id = ObjectId(instituicao_id)
+        
+        instituicao = await instituicoes_collection.find_one({"_id": instituicao_id})
+        instituicao_nome = instituicao.get("nome", "Instituição") if instituicao else "Instituição"
+        
+        # Atualizar último login
+        user_id_obj = user["_id"]
+        if isinstance(user_id_obj, str):
+            user_id_obj = ObjectId(user_id_obj)
+        
+        await usuarios_collection.update_one(
+            {"_id": user_id_obj},
+            {"$set": {"ultimoLogin": datetime.utcnow()}}
+        )
+        
+        # Criar token
+        user_id_str = str(user["_id"]) if not isinstance(user["_id"], str) else user["_id"]
+        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token = create_access_token(
+            data={"sub": user_id_str, "email": user["email"]},
+            expires_delta=access_token_expires
+        )
+        
+        return LoginResponse(
+            user=UserResponse(
+                id=user_id_str,
+                nome=user["nome"],
+                email=user["email"],
+                perfil=user.get("perfil", "USUARIO"),
+                instituicaoId=str(instituicao_id),
+                instituicaoNome=instituicao_nome,
+                ativo=user.get("ativo", True)
+            ),
+            token=access_token
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Erro no login: {e}")
+        raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
 
 @app.get("/test")
 async def test():

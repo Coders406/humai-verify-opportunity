@@ -3,9 +3,10 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Search, AlertTriangle, CheckCircle, XCircle, Loader2, Shield, AlertCircle, Briefcase, MapPin, DollarSign, Clock, Users, FileText, Link as LinkIcon, Copy, Wand2, Database } from 'lucide-react';
+import { ArrowLeft, Search, AlertTriangle, CheckCircle, XCircle, Loader2, Shield, AlertCircle, Briefcase, MapPin, DollarSign, Clock, Users, FileText, Link as LinkIcon, Copy, Wand2, LogIn, LogOut, User } from 'lucide-react';
 import { OportunidadeFormData, AnaliseResultado, RespostaAnalise, DadosVaga } from '@/types';
 import { config } from '@/config';
+import { useAuth } from '../hooks/useAuth';
 
 const oportunidadeSchema = z.object({
   // Campos de entrada
@@ -30,6 +31,7 @@ const oportunidadeSchema = z.object({
 
 export default function VerificarOportunidadePage() {
   const navigate = useNavigate();
+  const { isAuthenticated, user, logout } = useAuth();
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [resultado, setResultado] = useState<AnaliseResultado | null>(null);
   const [dadosVaga, setDadosVaga] = useState<DadosVaga | null>(null);
@@ -221,6 +223,38 @@ export default function VerificarOportunidadePage() {
 
         <div className="relative z-10 py-6 sm:py-8 lg:py-12 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
+            {/* Botão de Login/Logout no topo */}
+            <div className="flex justify-end mb-4">
+              {isAuthenticated ? (
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 text-sm text-gray-700">
+                    <User className="h-4 w-4" />
+                    <span className="hidden sm:inline">{user?.nome}</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      logout();
+                      navigate('/');
+                    }}
+                    className="inline-flex items-center px-3 xs:px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs xs:text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200"
+                  >
+                    <LogOut className="h-3 w-3 xs:h-4 xs:w-4 mr-2 flex-shrink-0" />
+                    <span>Sair</span>
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => navigate('/login')}
+                  className="inline-flex items-center px-3 xs:px-4 py-2 bg-gradient-to-r from-unodc-blue-600 to-unodc-navy-600 hover:from-unodc-blue-700 hover:to-unodc-navy-700 text-white rounded-lg text-xs xs:text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200"
+                >
+                  <LogIn className="h-3 w-3 xs:h-4 xs:w-4 mr-2 flex-shrink-0" />
+                  <span>Login</span>
+                </button>
+              )}
+            </div>
+
             {/* Header */}
             <div className="text-center mb-6 sm:mb-8">
               <button
@@ -626,6 +660,38 @@ export default function VerificarOportunidadePage() {
 
       <div className="relative z-10 py-4 xs:py-6 sm:py-8 lg:py-12 px-3 xs:px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
+          {/* Botão de Login no topo */}
+          <div className="flex justify-end mb-6">
+            {!isAuthenticated ? (
+              <button
+                type="button"
+                onClick={() => navigate('/login')}
+                className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-unodc-blue-600 to-unodc-navy-600 hover:from-unodc-blue-700 hover:to-unodc-navy-700 text-white rounded-lg text-sm font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+              >
+                <LogIn className="h-4 w-4 mr-2" />
+                <span>Fazer Login</span>
+              </button>
+            ) : (
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 text-sm text-gray-700">
+                  <User className="h-4 w-4" />
+                  <span className="hidden sm:inline">{user?.nome}</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    logout();
+                    navigate('/');
+                  }}
+                  className="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200"
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  <span>Sair</span>
+                </button>
+              </div>
+            )}
+          </div>
+
           {/* Header */}
           <div className="text-center mb-4 xs:mb-6 sm:mb-8">
             <div className="flex justify-center mb-3 xs:mb-4 sm:mb-6">
@@ -641,17 +707,6 @@ export default function VerificarOportunidadePage() {
               Analise uma oportunidade de emprego, estágio, curso ou negócio para identificar possíveis riscos de tráfico humano ou golpes.
             </p>
             
-            {/* Botão de Navegação */}
-            <div className="flex justify-center px-2">
-              <button
-                type="button"
-                onClick={() => navigate('/dados-oportunidades')}
-                className="inline-flex items-center px-3 xs:px-4 py-2 bg-white border border-gray-300 rounded-lg text-xs xs:text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors w-full xs:w-auto max-w-xs"
-              >
-                <Database className="h-3 w-3 xs:h-4 xs:w-4 mr-2 flex-shrink-0" />
-                <span className="truncate">Ver Dados das Oportunidades</span>
-              </button>
-            </div>
           </div>
 
           {/* Form */}

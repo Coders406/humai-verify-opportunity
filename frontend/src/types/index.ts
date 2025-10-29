@@ -114,3 +114,5 @@ export interface TopDominioRisco {
 export interface TopDominiosResponse {
   dominios: TopDominioRisco[];
 }
+
+

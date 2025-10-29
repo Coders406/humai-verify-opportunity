@@ -213,3 +213,5 @@ export default defineConfig({
                style-src 'self' 'unsafe-inline' fonts.googleapis.com; 
                font-src 'self' fonts.gstatic.com;">
 ```
+
+

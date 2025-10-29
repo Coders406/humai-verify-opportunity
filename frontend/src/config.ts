@@ -1,7 +1,7 @@
 // Configurações da aplicação
 export const config = {
   app: {
-    title: 'HUMAI - Verificar Oportunidade',
+    title: 'SafePath - Verificar Oportunidade',
     version: '1.0.0',
     description: 'Sistema de verificação de oportunidades para identificar possíveis riscos de tráfico humano'
   },
@@ -22,3 +22,5 @@ export const config = {
     }
   }
 };
+
+
