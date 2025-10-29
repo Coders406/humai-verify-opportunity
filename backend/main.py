@@ -1,0 +1,502 @@
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from typing import Optional, Dict, Any
+import os
+import json
+import re
+from datetime import datetime
+from dotenv import load_dotenv
+import google.generativeai as genai
+import requests
+from bs4 import BeautifulSoup
+from motor.motor_asyncio import AsyncIOMotorClient
+
+# Configuração inicial
+load_dotenv()
+api_key = os.getenv('GOOGLE_API_KEY')
+mongodb_url = os.getenv('MONGODB_URL', 'mongodb://localhost:27017')
+
+if not api_key or len(api_key) < 10:
+    raise ValueError("API key inválida. Verifique o arquivo .env")
+
+genai.configure(api_key=api_key)
+model = genai.GenerativeModel('gemini-2.0-flash')
+
+# Configuração do MongoDB
+client = AsyncIOMotorClient(mongodb_url)
+db = client.humai_verify
+vagas_collection = db.vagas
+
+app = FastAPI(title="HumAI Verify Opportunity API", version="1.0.0")
+
+# CORS middleware - deve ser adicionado ANTES de definir rotas
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "http://localhost:3000", "http://localhost:3002"],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["*"],
+    expose_headers=["*"],
+)
+
+# Headers para requisições web
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"
+}
+
+# Cache simples
+_cache = {}
+
+class AnalysisRequest(BaseModel):
+    tipoEntrada: str
+    linkOportunidade: Optional[str] = None
+    textoPublicacao: Optional[str] = None
+
+class RecomendacaoItem(BaseModel):
+    titulo: str
+    explicacao: str
+    paragrafoProblematico: Optional[str] = None
+
+class VagaCompleta(BaseModel):
+    # Dados originais
+    url_vaga: Optional[str] = None
+    texto_original: Optional[str] = None
+    tipo_entrada: str
+    
+    # Dados extraídos da vaga
+    titulo: Optional[str] = None
+    empresa: Optional[str] = None
+    descricao: Optional[str] = None
+    requisitos: Optional[str] = None
+    remuneracao: Optional[str] = None
+    localizacao: Optional[str] = None
+    tipo_oportunidade: Optional[str] = None
+    beneficios: Optional[str] = None
+    contatos: Optional[str] = None
+    plataforma: Optional[str] = None
+    
+    # Análise de risco
+    nivel_risco: str
+    pontuacao_risco: int
+    alertas: list[str]
+    recomendacoes: list[str]
+    recomendacoes_detalhadas: Optional[list[RecomendacaoItem]] = None
+    detalhes_risco: Dict[str, int]
+    
+    # Metadados
+    data_analise: datetime
+    data_criacao: datetime = datetime.now()
+
+class AnalysisResult(BaseModel):
+    nivelRisco: str
+    pontuacao: int
+    alertas: list[str]
+    recomendacoes: list[str]  # Mantido para compatibilidade
+    recomendacoesDetalhadas: Optional[list[RecomendacaoItem]] = None
+    detalhes: Dict[str, int]
+    textosSuspeitos: Optional[Dict[str, Optional[str]]] = None
+
+class Website:
+    """Classe para extração de conteúdo web"""
+    
+    def __init__(self, url: str):
+        self.url = url
+        
+        # Usar cache se disponível
+        if url in _cache:
+            cached = _cache[url]
+            self.title = cached['title']
+            self.text = cached['text']
+            return
+        
+        try:
+            response = requests.get(url, headers=HEADERS, timeout=10)
+            response.raise_for_status()
+            
+            soup = BeautifulSoup(response.content, 'html.parser')
+            
+            # Extrair título
+            self.title = soup.title.string if soup.title else "No title found"
+            
+            # Extrair texto limpo
+            if soup.body:
+                for tag in soup.body(["script", "style", "img", "input", "noscript", "iframe"]):
+                    tag.decompose()
+                self.text = soup.body.get_text(separator="\n", strip=True)
+            else:
+                self.text = ""
+            
+            # Guardar no cache
+            _cache[url] = {
+                'title': self.title,
+                'text': self.text
+            }
+        except Exception as e:
+            self.title = "Erro ao carregar"
+            self.text = f"Erro ao acessar URL: {str(e)}"
+
+def extract_json(text: str) -> Optional[Dict]:
+    """Extrai JSON de forma robusta do texto da resposta"""
+    try:
+        text = text.strip()
+        
+        # Remover markdown se presente
+        if text.startswith('```'):
+            text = re.sub(r'^```(?:json)?\n?', '', text)
+            text = re.sub(r'\n?```$', '', text)
+        
+        # Encontrar primeiro { até último }
+        start = text.index('{')
+        end = text.rindex('}') + 1
+        json_str = text[start:end]
+        
+        return json.loads(json_str)
+    except (ValueError, json.JSONDecodeError) as e:
+        print(f"Erro ao extrair JSON: {e}")
+        return None
+
+def get_recomendacoes_genericas() -> list[RecomendacaoItem]:
+    """Retorna recomendações genéricas de segurança para oportunidades de baixo/médio risco"""
+    return [
+        RecomendacaoItem(
+            titulo="Pesquise a empresa antes de prosseguir",
+            explicacao="Mesmo que a oportunidade pareça legítima, é sempre recomendável pesquisar informações sobre a empresa em sites oficiais, redes sociais e plataformas de avaliação profissional antes de se candidatar.",
+            paragrafoProblematico=None
+        ),
+        RecomendacaoItem(
+            titulo="Verifique a identidade do contato",
+            explicacao="Confirme que o contato fornecido realmente pertence à empresa anunciada. Prefira comunicação através de canais oficiais da empresa quando possível.",
+            paragrafoProblematico=None
+        ),
+        RecomendacaoItem(
+            titulo="Nunca forneça informações sensíveis prematuramente",
+            explicacao="Empresas legítimas não solicitam informações bancárias, senhas ou documentos pessoais antes de uma entrevista formal ou processo de seleção estabelecido.",
+            paragrafoProblematico=None
+        ),
+        RecomendacaoItem(
+            titulo="Mantenha-se informado sobre golpes",
+            explicacao="Fique atento a sinais comuns de golpes como promessas de ganhos fáceis, pressão para decisão rápida ou solicitação de pagamento antecipado.",
+            paragrafoProblematico=None
+        )
+    ]
+
+def analisar_oportunidade_llm(conteudo: str) -> tuple[AnalysisResult, dict]:
+    """Analisa oportunidade usando LLM"""
+    
+    system_prompt = """Você é um especialista em análise de riscos de tráfico humano e golpes em oportunidades de emprego.
+
+Analise o conteúdo fornecido e:
+1. Extraia TODOS os dados da vaga de emprego
+2. Identifique sinais de alerta baseados nos critérios de análise
+
+CRITÉRIOS DE ANÁLISE:
+1. Título suspeito (palavras como "fácil", "ganhe muito", "trabalho em casa")
+2. Empresa genérica ou inexistente
+3. Descrição vaga ou com promessas irrealistas
+4. Requisitos muito baixos para salário alto
+5. Contato apenas por WhatsApp sem email oficial
+6. Plataforma não profissional (redes sociais pessoais)
+7. Remuneração muito alta para a função
+8. Falta de informações sobre a empresa
+9. Pressão para decisão rápida
+10. Solicitação de dinheiro antecipado
+11. Email suspeito (Gmail, Yahoo, Hotmail para empresas sérias)
+12. URL suspeita (domínios não confiáveis, encurtadores, sites genéricos)
+
+Para cada recomendação, forneça:
+- Um título curto e direto (máximo 80 caracteres)
+- O parágrafo ou frase específica do conteúdo que é problemática (se aplicável)
+- Uma explicação detalhada do motivo da recomendação, baseada nos sinais específicos encontrados no conteúdo analisado
+
+IMPORTANTE: Sempre forneça recomendações detalhadas. Se não houver sinais de alerta específicos, forneça recomendações preventivas de segurança geral para proteger o usuário.
+
+Retorne APENAS um JSON com a seguinte estrutura:
+{
+    "dadosVaga": {
+        "titulo": "Título da vaga extraído",
+        "empresa": "Nome da empresa/organização",
+        "descricao": "Descrição completa da vaga",
+        "requisitos": "Requisitos para a vaga",
+        "remuneracao": "Valor da remuneração/salário",
+        "localizacao": "Localização da vaga",
+        "tipoOportunidade": "EMPREGO|ESTAGIO|VOLUNTARIADO|CURSO|BOLSA_ESTUDO|NEGOCIO|OUTROS",
+        "beneficios": "Benefícios oferecidos",
+        "contatos": "Informações de contato",
+        "plataforma": "Plataforma onde foi encontrada"
+    },
+    "analiseRisco": {
+        "nivelRisco": "BAIXO|MEDIO|ALTO|CRITICO",
+        "pontuacao": 0-100,
+        "alertas": ["lista de alertas encontrados com descrição específica"],
+        "recomendacoes": ["lista de recomendações curtas"],
+        "recomendacoesDetalhadas": [
+            {
+                "titulo": "Título curto da recomendação",
+                "paragrafoProblematico": "Parágrafo ou frase específica do conteúdo que é problemática (se aplicável)",
+                "explicacao": "Explicação detalhada do motivo desta recomendação, citando os sinais específicos encontrados no conteúdo analisado. Seja específico e claro."
+            }
+        ],
+        "detalhes": {
+            "tituloSuspeito": 0-100,
+            "empresaSuspeita": 0-100,
+            "descricaoVaga": 0-100,
+            "requisitosVagos": 0-100,
+            "salarioIrreal": 0-100,
+            "contatoSuspeito": 0-100,
+            "plataformaSuspeita": 0-100,
+            "emailSuspeito": 0-100,
+            "urlSuspeita": 0-100
+        },
+        "textosSuspeitos": {
+            "tituloSuspeito": "Texto específico do título que é suspeito (se houver)",
+            "empresaSuspeita": "Texto específico sobre a empresa que é suspeito (se houver)",
+            "descricaoVaga": "Texto específico da descrição que é suspeito (se houver)",
+            "requisitosVagos": "Texto específico dos requisitos que é suspeito (se houver)",
+            "salarioIrreal": "Texto específico sobre salário que é suspeito (se houver)",
+            "contatoSuspeito": "Texto específico do contato que é suspeito (se houver)",
+            "plataformaSuspeita": "Texto específico da plataforma que é suspeito (se houver)",
+            "emailSuspeito": "Email específico que é suspeito (se houver)",
+            "urlSuspeita": "URL específica que é suspeita (se houver)"
+        }
+    }
+}"""
+
+    try:
+        response = model.generate_content(system_prompt + "\n\nConteúdo para análise:\n" + conteudo)
+        result = extract_json(response.text)
+        
+        if result and 'analiseRisco' in result:
+            analise = result['analiseRisco']
+            dados_vaga = result.get('dadosVaga', {})
+            
+            nivel_risco = analise.get('nivelRisco', 'MEDIO')
+            
+            # Processar recomendações detalhadas
+            recomendacoes_detalhadas = [
+                RecomendacaoItem(
+                    titulo=rec.get('titulo', ''),
+                    explicacao=rec.get('explicacao', ''),
+                    paragrafoProblematico=rec.get('paragrafoProblematico')
+                ) for rec in analise.get('recomendacoesDetalhadas', [])
+            ]
+            
+            # Se não houver recomendações específicas e o nível de risco for BAIXO ou MÉDIO,
+            # adicionar recomendações genéricas de segurança
+            if not recomendacoes_detalhadas and nivel_risco in ['BAIXO', 'MEDIO']:
+                recomendacoes_detalhadas = get_recomendacoes_genericas()
+                # Também atualizar recomendações simples
+                recomendacoes_simples = analise.get('recomendacoes', [])
+                if not recomendacoes_simples:
+                    recomendacoes_simples = [rec.titulo for rec in recomendacoes_detalhadas]
+            else:
+                recomendacoes_simples = analise.get('recomendacoes', [])
+            
+            return AnalysisResult(
+                nivelRisco=nivel_risco,
+                pontuacao=analise.get('pontuacao', 50),
+                alertas=analise.get('alertas', []),
+                recomendacoes=recomendacoes_simples,
+                recomendacoesDetalhadas=recomendacoes_detalhadas,
+                detalhes=analise.get('detalhes', {
+                    "tituloSuspeito": 0,
+                    "empresaSuspeita": 0,
+                    "descricaoVaga": 0,
+                    "requisitosVagos": 0,
+                    "salarioIrreal": 0,
+                    "contatoSuspeito": 0,
+                    "plataformaSuspeita": 0,
+                    "emailSuspeito": 0,
+                    "urlSuspeita": 0
+                }),
+                textosSuspeitos={k: v for k, v in analise.get('textosSuspeitos', {}).items() if v is not None}
+            ), dados_vaga
+        else:
+            # Fallback se não conseguir extrair JSON - incluir recomendações genéricas
+            recomendacoes_fallback = get_recomendacoes_genericas()
+            return AnalysisResult(
+                nivelRisco="MEDIO",
+                pontuacao=50,
+                alertas=["Erro na análise automática"],
+                recomendacoes=[rec.titulo for rec in recomendacoes_fallback] + ["Verifique manualmente a oportunidade"],
+                recomendacoesDetalhadas=recomendacoes_fallback + [
+                    RecomendacaoItem(
+                        titulo="Verifique manualmente a oportunidade",
+                        explicacao="Não foi possível realizar a análise automática completa. Por favor, revise cuidadosamente a oportunidade antes de tomar qualquer decisão.",
+                        paragrafoProblematico=None
+                    )
+                ],
+                detalhes={
+                    "tituloSuspeito": 0,
+                    "empresaSuspeita": 0,
+                    "descricaoVaga": 0,
+                    "requisitosVagos": 0,
+                    "salarioIrreal": 0,
+                    "contatoSuspeito": 0,
+                    "plataformaSuspeita": 0,
+                    "emailSuspeito": 0,
+                    "urlSuspeita": 0
+                },
+                textosSuspeitos={}
+            ), {}
+    except Exception as e:
+        print(f"Erro na análise LLM: {e}")
+        # Incluir recomendações genéricas mesmo em caso de erro
+        recomendacoes_erro = get_recomendacoes_genericas()
+        return AnalysisResult(
+            nivelRisco="MEDIO",
+            pontuacao=50,
+            alertas=[f"Erro na análise: {str(e)}"],
+            recomendacoes=[rec.titulo for rec in recomendacoes_erro] + ["Verifique manualmente a oportunidade"],
+            recomendacoesDetalhadas=recomendacoes_erro + [
+                RecomendacaoItem(
+                    titulo="Verifique manualmente a oportunidade",
+                    explicacao=f"Ocorreu um erro durante a análise automática ({str(e)}). Por favor, revise cuidadosamente a oportunidade antes de tomar qualquer decisão e considere consultar autoridades competentes se identificar sinais suspeitos.",
+                    paragrafoProblematico=None
+                )
+            ],
+            detalhes={
+                "tituloSuspeito": 0,
+                "empresaSuspeita": 0,
+                "descricaoVaga": 0,
+                "requisitosVagos": 0,
+                "salarioIrreal": 0,
+                "contatoSuspeito": 0,
+                "plataformaSuspeita": 0,
+                "emailSuspeito": 0,
+                "urlSuspeita": 0
+            },
+            textosSuspeitos={}
+        ), {}
+
+async def salvar_vaga_no_banco(vaga_data: dict) -> str:
+    """Salva a vaga no MongoDB e retorna o ID"""
+    try:
+        vaga_doc = VagaCompleta(**vaga_data)
+        result = await vagas_collection.insert_one(vaga_doc.dict())
+        return str(result.inserted_id)
+    except Exception as e:
+        print(f"Erro ao salvar no banco: {e}")
+        return None
+
+@app.get("/")
+async def root():
+    return {"message": "HumAI Verify Opportunity API"}
+
+@app.get("/test")
+async def test():
+    return {"status": "ok", "message": "API funcionando"}
+
+@app.post("/analyze")
+async def analyze_opportunity(request: AnalysisRequest):
+    """Analisa uma oportunidade de emprego"""
+    
+    try:
+        conteudo = ""
+        
+        if request.tipoEntrada == "LINK" and request.linkOportunidade:
+            # Extrair conteúdo do link
+            try:
+                website = Website(request.linkOportunidade)
+                conteudo = f"Título: {website.title}\n\nConteúdo: {website.text}"
+            except Exception as e:
+                print(f"Erro ao extrair conteúdo do link: {e}")
+                conteudo = f"Link fornecido: {request.linkOportunidade}\nErro ao extrair conteúdo completo."
+        elif request.tipoEntrada == "TEXTO" and request.textoPublicacao:
+            # Usar texto fornecido
+            conteudo = request.textoPublicacao
+        else:
+            raise HTTPException(status_code=400, detail="Tipo de entrada ou conteúdo inválido")
+        
+        if not conteudo or len(conteudo.strip()) < 10:
+            raise HTTPException(status_code=400, detail="Conteúdo muito curto ou vazio")
+        
+        # Analisar com LLM
+        resultado, dados_vaga = analisar_oportunidade_llm(conteudo)
+        
+        # Preparar dados para salvar no banco
+        vaga_data = {
+            "url_vaga": request.linkOportunidade if request.tipoEntrada == "LINK" else None,
+            "texto_original": request.textoPublicacao if request.tipoEntrada == "TEXTO" else None,
+            "tipo_entrada": request.tipoEntrada,
+            "titulo": dados_vaga.get("titulo"),
+            "empresa": dados_vaga.get("empresa"),
+            "descricao": dados_vaga.get("descricao"),
+            "requisitos": dados_vaga.get("requisitos"),
+            "remuneracao": dados_vaga.get("remuneracao"),
+            "localizacao": dados_vaga.get("localizacao"),
+            "tipo_oportunidade": dados_vaga.get("tipoOportunidade"),
+            "beneficios": dados_vaga.get("beneficios"),
+            "contatos": dados_vaga.get("contatos"),
+            "plataforma": dados_vaga.get("plataforma"),
+            "nivel_risco": resultado.nivelRisco,
+            "pontuacao_risco": resultado.pontuacao,
+            "alertas": resultado.alertas,
+            "recomendacoes": resultado.recomendacoes,
+            "recomendacoes_detalhadas": [rec.model_dump() for rec in resultado.recomendacoesDetalhadas] if resultado.recomendacoesDetalhadas else [],
+            "detalhes_risco": resultado.detalhes,
+            "data_analise": datetime.now()
+        }
+        
+        # Salvar no MongoDB
+        vaga_id = await salvar_vaga_no_banco(vaga_data)
+        if vaga_id:
+            print(f"Vaga salva no banco com ID: {vaga_id}")
+        
+        # Criar resposta com dados da vaga
+        response_data = {
+            "analise": resultado.model_dump(),
+            "dadosVaga": dados_vaga,
+            "textoOriginal": conteudo
+        }
+        
+        return response_data
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Erro no endpoint /analyze: {e}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
+
+@app.get("/vagas")
+async def listar_vagas(limit: int = 10, skip: int = 0):
+    """Lista vagas analisadas"""
+    try:
+        cursor = vagas_collection.find().skip(skip).limit(limit).sort("data_analise", -1)
+        vagas = []
+        async for vaga in cursor:
+            vaga["_id"] = str(vaga["_id"])
+            vagas.append(vaga)
+        
+        total = await vagas_collection.count_documents({})
+        
+        return {
+            "vagas": vagas,
+            "total": total,
+            "limit": limit,
+            "skip": skip
+        }
+    except Exception as e:
+        print(f"Erro ao listar vagas: {e}")
+        raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
+
+@app.get("/vagas/{vaga_id}")
+async def obter_vaga(vaga_id: str):
+    """Obtém uma vaga específica por ID"""
+    try:
+        from bson import ObjectId
+        vaga = await vagas_collection.find_one({"_id": ObjectId(vaga_id)})
+        if not vaga:
+            raise HTTPException(status_code=404, detail="Vaga não encontrada")
+        
+        vaga["_id"] = str(vaga["_id"])
+        return vaga
+    except Exception as e:
+        print(f"Erro ao obter vaga: {e}")
+        raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

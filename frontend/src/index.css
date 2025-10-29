@@ -1,0 +1,55 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@layer base {
+  * {
+    @apply border-gray-200;
+  }
+  
+  body {
+    @apply bg-white text-gray-900 font-sans;
+    font-feature-settings: 'cv11', 'ss01';
+    font-variant-numeric: 'oldstyle-nums';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-semibold;
+    font-feature-settings: 'cv11', 'ss01';
+    font-variant-numeric: 'oldstyle-nums';
+  }
+  
+  button, input, textarea, select {
+    @apply font-sans;
+    font-feature-settings: 'cv11', 'ss01';
+    font-variant-numeric: 'oldstyle-nums';
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-unodc-blue-600 hover:bg-unodc-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-lg;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg transition-all duration-200;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-unodc-blue-500 focus:border-transparent transition-all duration-200;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .btn-primary,
+  .btn-secondary {
+    @apply text-sm py-2 px-3;
+  }
+  
+  .input-field {
+    @apply text-sm py-2 px-3;
+  }
+}
